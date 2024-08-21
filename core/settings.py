@@ -50,9 +50,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://projetoepisdal-production.up.railway.app/', 'http://localhost:8000']
+    'https://projetoepisdal-production.up.railway.app',
+    'http://localhost:8000'
+]
+
 
 CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
+
 
 TEMPLATES = [
     {
