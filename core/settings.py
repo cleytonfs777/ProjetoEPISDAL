@@ -11,7 +11,8 @@ SECRET_KEY = 'django-insecure-fi)&f2$&zokq1vsr6g@kie#*ef+f&kyjkwlb2(lmi9hni%q+z&
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "https://projetoepisdal-production.up.railway.app/", "localhost", "127.0.0.1"]
 
 AUTH_USER_MODEL = 'usuarios.Users'
 
