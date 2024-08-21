@@ -49,6 +49,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://projetoepisdal-production.up.railway.app/', 'http://localhost:8000']
+
+CSRF_COOKIE_SECURE = True
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
