@@ -1432,3 +1432,13 @@ span.loader {
   color: #fa7900;
   font-weight: 700;
 }
+.stilo-message {
+  position: relative;
+}
+
+.close-alert {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 18px;
+}

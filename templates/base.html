@@ -219,6 +219,15 @@
   <!-- Template Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/style.js' %}"></script>
+  <script>
+    const closeButtons = document.querySelectorAll('.close-alert');
+    closeButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const alert = this.parentElement;
+            alert.style.display = 'none';
+        });
+    });
+  </script>
   
   {% block myscripts %}{% endblock %}
 

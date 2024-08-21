@@ -68,7 +68,7 @@ class UsersAdmin(admin_auth_django.UserAdmin):
         ('Informações Adicionais', {
             'fields': (
                 'cargo', 'numbm', 'postgrad', 'time_service_days',
-                'status', 'sitfunc', 'gto', 'ativ_esp', 'list_ativ_esp', 'cob', 'unid_lot', 'unid_princ',
+                'status', 'sitfunc', 'gto', 'date_include', 'ativ_esp', 'list_ativ_esp', 'cob', 'unid_lot', 'unid_princ',
                 'sexo', 'emailfunc', 'priorit'
             )
         }),
@@ -79,7 +79,7 @@ class UsersAdmin(admin_auth_django.UserAdmin):
             'classes': ('wide',),
             'fields': (
                 'cargo', 'numbm', 'postgrad', 'time_service_days',
-                'status', 'sitfunc', 'gto', 'ativ_esp', 'list_ativ_esp', 'cob', 'unid_lot', 'unid_princ',
+                'status', 'sitfunc', 'gto', 'date_include', 'ativ_esp', 'list_ativ_esp', 'cob', 'unid_lot', 'unid_princ',
                 'sexo', 'emailfunc', 'priorit'
             )
         }),
