@@ -1,0 +1,672 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}MULTIMISSÃO{% endblock %}
+{% block style %}
+body {
+  font-size: 13px;
+}
+.custom-container {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .custom-header {
+    background-color: #333;
+    color: #FFA500;
+    padding: 10px;
+  }
+  .custom-inform > button {
+    background-color: #333;
+    color: #FFA500;
+    padding: 10px;
+  }
+  .custom-form {
+    background: linear-gradient(to bottom, #fff, #ccc);
+    padding: 20px;
+  }
+  .custom-form .form-group {
+    margin-bottom: 15px;
+  }
+  .modal-custom {
+    max-width: 60%; /* Ou o valor que você quiser */
+  }
+  .button-custom {
+    background-color: #333;
+    color: #FFA500;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+{% endblock %}
+{% block max-title %}MULTIMISSÃO{% endblock%}
+{% block content %}
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="custom-container">
+            <div class="custom-header d-flex flex-row justify-content-between align-items-center">
+              <h3 class="fw-bold">Conjunto</h3>
+              <p class="custom-inform">
+                <button 
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="button-custom" data-img-url="{% static 'img/conjunto.png' %}">Medidas</button></p>
+            </div>
+            <div class="custom-form">
+              <form>
+                <!-- Primeira linha de Conjunto-->
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 d-flex justify-content-between align-items-center pe-4">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="conjunto" id="possuiconjunto" value="option1" checked>
+                          <label class="form-check-label" for="possuiconjunto">
+                            Possui
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="conjunto" id="naopossuiconjunto" value="option2">
+                          <label class="form-check-label" for="naopossuiconjunto">
+                            Não possui
+                          </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                        <h4 class="fw-bold">Dados do Equipamento</h4>
+                    </div>
+            </div>
+            <!-- Segunda linha de Conjunto-->
+            <div class="form-row d-flex">
+                <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                    <h4 class="fw-bold">Medidas</h4>
+                </div>
+                <div class="form-group col-md-6 mx-1">
+                      <div class="row">
+                        <div class="col-md-6">
+                            <label for="input2">Marca</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="input2">Modelo</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Jaqueta</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="pequeno">Pequeno</option>
+                                    <option value="medio">Médio</option>
+                                    <option value="grande">Grande</option>
+                                    <option value="1extra">1º Extra Grande</option>
+                                    <option value="2extra">2º Extra Grande</option>
+                                    <option value="3extra">3º Extra Grande</option>
+                                  </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+                            </div>
+                        </div>
+                      </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="date1">Ano de Fabricação</label>
+                    <input type="number" class="form-control" id="input3" placeholder="" maxlength="4" oninput="this.value=this.value.slice(0,this.maxLength)" inputmode="numeric">
+                </div>
+                </div>
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Calça</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="pequeno">Pequeno</option>
+                                    <option value="medio">Médio</option>
+                                    <option value="grande">Grande</option>
+                                    <option value="1extra">1º Extra Grande</option>
+                                    <option value="2extra">2º Extra Grande</option>
+                                    <option value="3extra">3º Extra Grande</option>
+                                  </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+                            </div>
+                        </div>
+                      </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="input2">Plano de Distribuição</label>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" id="input2">
+                      </div>
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" id="input2">
+                      </div>
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" id="input2">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+
+                    <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Estado de Conservação</label>
+                        <select id="select1" class="form-control">
+                            <option selected></option>
+                            <option value="bom">Bom</option>
+                            <option value="otimo">Ótimo</option>
+                            <option value="razoavel">Razoável</option>
+                            <option value="ruim">Ruim</option>
+                          </select>
+                          <div class="form-group col-md-6 mt-2">
+                            <label for="condicaoAnalisadacapacete" class="mr-3">Condição Analisada:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="condicaoAnalisadacapacete" id="procedecapacete" value="procedecapacete">
+                                <label class="form-check-label" for="procedecapacete">Procede</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="condicaoAnalisadacapacete" id="naoProcedecapacete" value="naoProcedecapacete">
+                                <label class="form-check-label" for="naoProcedecapacete">Não Procede</label>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group col-md-6 mx-1 d-flex flex-row justify-content-between align-items-center">
+                        <div class="form-check col-md-4">
+                          <input type="checkbox" id="recebidoconj" class="form-check-input">
+                          <label for="recebidoconj">Recebido</label>
+                        </div>
+                        <div class="form-group mt-3 col-md-7">
+                            <label for="dataconj">Recebimento</label>
+                            <input type="date" id="dataconj" class="form-control">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="form-row d-flex">
+                  
+                  
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="custom-container">
+            <div class="custom-header d-flex flex-row justify-content-between align-items-center">
+              <h3 class="fw-bold">Capacete</h3>
+              <p class="custom-inform">
+                <button 
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="button-custom"  data-img-url="{% static 'img/capacete.png' %}">Medidas</button></p>
+            </div>
+            <div class="custom-form">
+              <form>
+                <!-- Primeira linha de Conjunto-->
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 d-flex justify-content-between align-items-center pe-4">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="capacete" id="possuicapacete" value="option1" checked>
+                          <label class="form-check-label" for="possuicapacete">
+                            Possui
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="capacete" id="naopossuicapacete" value="option2">
+                          <label class="form-check-label" for="naopossuicapacete">
+                            Não possui
+                          </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                        <h4 class="fw-bold">Dados do Equipamento</h4>
+                    </div>
+            </div>
+            <!-- Segunda linha de Conjunto-->
+            <div class="form-row d-flex">
+                <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                    <h4 class="fw-bold">Caracteristicas</h4>
+                </div>
+                <div class="form-group col-md-6 mx-1">
+                      <div class="row">
+                        <div class="col-md-6">
+                            <label for="input2">Marca</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="input2">Modelo</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Cor</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="branco">Branco</option>
+                                    <option value="vermelho">Vermelho</option>
+                                    <option value="amarelo">Amarelo</option>
+                                  </select>
+                            </div>
+                        </div>
+                      </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="date1">Ano de Fabricação</label>
+                    <input type="number" class="form-control" id="input3" placeholder="" maxlength="4" oninput="this.value=this.value.slice(0,this.maxLength)" inputmode="numeric">
+                </div>
+                </div>
+                <div class="form-row d-flex">
+                      <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Estado de Conservação</label>
+                        <select id="select1" class="form-control">
+                            <option selected></option>
+                            <option value="bom">Bom</option>
+                            <option value="otimo">Ótimo</option>
+                            <option value="razoavel">Razoável</option>
+                            <option value="ruim">Ruim</option>
+                          </select>
+                      </div>
+                        <div class="form-group col-md-6 mx-1">
+                          <label for="input2">Plano de Distribuição</label>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <input type="text" class="form-control" id="input2">
+                            </div>
+                            <div class="col-md-4">
+                              <input type="text" class="form-control" id="input2">
+                            </div>
+                            <div class="col-md-4">
+                              <input type="text" class="form-control" id="input2">
+                            </div>
+                          </div>
+                    </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="input2">Plano de Distribuição</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="condicaoAnalisadacapacete" class="mr-3">Condição Analisada:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="condicaoAnalisadacapacete" id="procedecapacete" value="procedecapacete">
+                        <label class="form-check-label" for="procedecapacete">Procede</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="condicaoAnalisadacapacete" id="naoProcedecapacete" value="naoProcedecapacete">
+                        <label class="form-check-label" for="naoProcedecapacete">Não Procede</label>
+                    </div>
+                  </div>
+                
+                      <div class="form-group col-md-6 mx-1 d-flex flex-row justify-content-between align-items-center">
+                        <div class="form-check col-md-4">
+                          <input type="checkbox" id="recebidocap" class="form-check-input">
+                          <label for="recebidocap">Recebido</label>
+                        </div>
+                        <div class="form-group mt-3 col-md-7">
+                            <label for="datacap">Recebimento</label>
+                            <input type="date" id="datacap" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row d-flex">
+                  <div class="form-group col-md-6 mx-1">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="custom-container">
+            <div class="custom-header d-flex flex-row justify-content-between align-items-center">
+              <h3 class="fw-bold">Luva</h3>
+              <p class="custom-inform">
+                <button 
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="button-custom" data-img-url="{% static 'img/luva.png' %}">Medidas</button></p>
+            </div>
+            <div class="custom-form">
+              <form>
+                <!-- Primeira linha de Conjunto-->
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 d-flex justify-content-between align-items-center pe-4">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="luva" id="possuiluva" value="option1" checked>
+                          <label class="form-check-label" for="possuiluva">
+                            Possui
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="luva" id="naopossuiluva" value="option2">
+                          <label class="form-check-label" for="naopossuiluva">
+                            Não possui
+                          </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                        <h4 class="fw-bold">Dados do Equipamento</h4>
+                    </div>
+            </div>
+            <!-- Segunda linha de Conjunto-->
+            <div class="form-row d-flex">
+                <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                    <h4 class="fw-bold">Medidas</h4>
+                </div>
+                <div class="form-group col-md-6 mx-1">
+                      <div class="row">
+                        <div class="col-md-6">
+                            <label for="input2">Marca</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="input2">Modelo</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Circunferência da mão</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="pequeno">Pequeno</option>
+                                    <option value="medio">Médio</option>
+                                    <option value="grande">Grande</option>
+                                    <option value="1extra">1º Extra Grande</option>
+                                    <option value="2extra">2º Extra Grande</option>
+                                    <option value="3extra">3º Extra Grande</option>
+                                  </select>
+                            </div>
+                        </div>
+                      </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="date1">Ano de Fabricação</label>
+                    <input type="number" class="form-control" id="input3" placeholder="" maxlength="4" oninput="this.value=this.value.slice(0,this.maxLength)" inputmode="numeric">
+                </div>
+                </div>
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 mx-1">
+                        <label for="select1">Tamanho</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <select id="select1" class="form-control">
+                                    <option selected></option>
+                                    <option value="pequeno">Pequeno</option>
+                                    <option value="medio">Médio</option>
+                                    <option value="grande">Grande</option>
+                                    <option value="1extra">1º Extra Grande</option>
+                                    <option value="2extra">2º Extra Grande</option>
+                                    <option value="3extra">3º Extra Grande</option>
+                                  </select>
+                            </div>
+                        </div>
+                      </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="input2">Plano de Distribuição</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                  <div class="form-group col-md-6 mx-1">
+                      <label for="select1">Estado de Conservação</label>
+                      <div class="row">
+                          <div class="col-md-12">
+                            <select id="select1" class="form-control">
+                              <option selected></option>
+                              <option value="bom">Bom</option>
+                              <option value="otimo">Ótimo</option>
+                              <option value="razoavel">Razoável</option>
+                              <option value="ruim">Ruim</option>
+                            </select>
+                          </div>  
+                      </div>
+                    </div>
+                </div>
+                <div class="form-row d-flex">
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="condicaoAnalisadaluva" class="mr-3">Condição Analisada:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="condicaoAnalisadaluva" id="procedeluva" value="procedeluva">
+                        <label class="form-check-label" for="procedeluva">Procede</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="condicaoAnalisadaluva" id="naoProcedeluva" value="naoProcedeluva">
+                        <label class="form-check-label" for="naoProcedeluva">Não Procede</label>
+                    </div>
+                  </div>
+                      <div class="form-group col-md-6 mx-1 d-flex flex-row justify-content-between align-items-center">
+                        <div class="form-check col-md-4">
+                          <input type="checkbox" id="recebidoluva" class="form-check-input">
+                          <label for="recebidoluva">Recebido</label>
+                        </div>
+                        <div class="form-group mt-3 col-md-7">
+                            <label for="dataluva">Recebimento</label>
+                            <input type="date" id="dataluva" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="custom-container">
+            <div class="custom-header d-flex flex-row justify-content-between align-items-center">
+              <h3 class="fw-bold">Bota</h3>
+              <p class="custom-inform">
+                <button 
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="button-custom" data-img-url="{% static 'img/bota.png' %}">Medidas</button></p>
+            </div>
+            <div class="custom-form">
+              <form>
+                <!-- Primeira linha de Conjunto-->
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6 d-flex justify-content-between align-items-center pe-4">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="bota" id="possuibota" value="option1" checked>
+                          <label class="form-check-label" for="possuibota">
+                            Possui
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="bota" id="naopossuibota" value="option2">
+                          <label class="form-check-label" for="naopossuibota">
+                            Não possui
+                          </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                        <h4 class="fw-bold">Dados do Equipamento</h4>
+                    </div>
+            </div>
+            <!-- Segunda linha de Conjunto-->
+            <div class="form-row d-flex">
+                <div class="form-group col-md-6 mx-1 d-flex align-items-center">
+                    <h4 class="fw-bold">Medidas</h4>
+                </div>
+                <div class="form-group col-md-6 mx-1">
+                      <div class="row">
+                        <div class="col-md-6">
+                            <label for="input2">Marca</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="input2">Modelo</label>
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="select1">Tamanho</label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <select id="select1" class="form-control">
+                            <option selected></option>
+                            <option value="pequeno">Pequeno</option>
+                            <option value="medio">Médio</option>
+                            <option value="grande">Grande</option>
+                            <option value="1extra">1º Extra Grande</option>
+                            <option value="2extra">2º Extra Grande</option>
+                            <option value="3extra">3º Extra Grande</option>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="date1">Ano de Fabricação</label>
+                    <input type="number" class="form-control" id="input3" placeholder="" maxlength="4" oninput="this.value=this.value.slice(0,this.maxLength)" inputmode="numeric">
+                </div>
+                </div>
+                <div class="form-row d-flex">
+
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="select1">Estado de Conservação</label>
+                    <div class="row">
+                        <div class="col-md-12">
+                          <select id="select1" class="form-control">
+                            <option selected></option>
+                            <option value="bom">Bom</option>
+                            <option value="otimo">Ótimo</option>
+                            <option value="razoavel">Razoável</option>
+                            <option value="ruim">Ruim</option>
+                          </select>
+                        </div>  
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="input2">Plano de Distribuição</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                        <div class="col-md-4">
+                      <input type="text" class="form-control" id="input2">
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-row d-flex">
+                  <div class="form-group col-md-6 mx-1">
+                    <label for="condicaoAnalisadabota" class="mr-3">Condição Analisada:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="condicaoAnalisadabota" id="procedebota" value="procedebota">
+                        <label class="form-check-label" for="procedebota">Procede</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="condicaoAnalisadabota" id="naoProcedebota" value="naoProcedebota">
+                        <label class="form-check-label" for="naoProcedebota">Não Procede</label>
+                    </div>
+                  </div>
+                      <div class="form-group col-md-6 mx-1 d-flex flex-row justify-content-between align-items-center">
+                        <div class="form-check col-md-4">
+                          <input type="checkbox" id="recebidobota" class="form-check-input">
+                          <label for="recebidobota">Recebido</label>
+                        </div>
+                        <div class="form-group mt-3 col-md-7">
+                            <label for="databota">Recebimento</label>
+                            <input type="date" id="databota" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Dialog Scrollable -->
+<!-- Modal Dialog Scrollable -->
+<div class="modal fade" id="staticBackdrop" tabindex="-1">
+  <div class="modal-dialog modal-dialog-scrollable modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Medidas</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div style="margin: auto;">
+          <img id="modal-image" src="" alt="conjunto">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      var modalImage = document.getElementById('modal-image');
+      var modal = document.getElementById('staticBackdrop');
+  
+      modal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget;  // Botão que acionou o modal
+          var imageUrl = button.getAttribute('data-img-url'); // Pega o data-img-url
+          modalImage.src = imageUrl; // Altera o src da imagem
+      });
+  });
+  </script>
+  
+<!-- Modal Dialog Scrollable modalViewDotOrc -->
+{% endblock %}

@@ -1,0 +1,1105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastro{% endblock %}
+{% block style %}
+<style>
+    /* Estilos personalizados */
+    body {
+        font-size: 13px;
+    }
+    .custom-container {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .custom-header {
+        background-color: #333;
+        color: #FFA500;
+        padding: 10px;
+    }
+    .custom-form {
+        background:  #cccCCC!important;
+        padding: 20px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .button-custom {
+        width: 100%;
+        background-color: #333;
+        color: #FFA500;
+        font-weight: bold;
+        font-size: 1.5rem;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .button-main {
+        color: orange;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    .tags-input {
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .tags-input .tag {
+        background-color: #add8e6;
+        color: #000000;
+        border-radius: 3px;
+        padding: 5px;
+        margin: 2px;
+        display: flex;
+        align-items: center;
+    }
+    .tags-input .tag .remove-tag {
+        margin-left: 5px;
+        cursor: pointer;
+    }
+    .tags-input input {
+        border: none;
+        outline: none;
+        flex: 1;
+    }
+    .sub-title-main {
+        font-weight: bold;
+        background-color: #7A7A7A;
+        color: #FFF;
+        padding: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    label.label-special {
+        color: #7E2E00!important;
+    }
+</style>
+{% endblock %}
+{% block max-title %}Cadastro de Usuários{% endblock%}
+{% block content %}
+<div class="container mt-5">
+    <form action="#" method="POST">
+        <!-- Dados do Usuário -->
+        <div class="custom-container mb-5">
+            <div class="custom-header">
+                <h3>Dados do Usuário</h3>
+            </div>
+            <div class="custom-form">
+                <div class="row py-2">
+                    <div class="col-md-4">
+                        <label for="numbm" class="form-label text-success">Nº</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="numbm"
+                            name="numbm"
+                            maxlength="10"
+                            placeholder="Digite apenas os números"
+                                        style="font-size: 0.8em;"
+                            required
+                        />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="namebm" class="form-label text-success">Nome</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="namebm"
+                            name="namebm"
+                            
+                                        style="font-size: 0.8em;"
+                            required
+                        />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="postgradbm" class="form-label text-success">Posto/Grad</label>
+                        <select
+                            class="form-select"
+                            aria-label="Default"
+                            id="postgradbm"
+                            name="postgradbm"
+                                        style="font-size: 0.8em;"
+                            required
+                        >
+                            <option selected disabled>Escolha o Posto/Grad</option>
+                            {% for key, value in choices_postgrad %}
+                            <option value="{{ key }}">{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col-md-3">
+                        <label for="firstinc" class="form-label text-success">Data 1ª Inclusão</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="firstinc"
+                            name="firstinc"
+                                        style="font-size: 0.8em;"
+                            
+                            required
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="tempserv" class="form-label text-success">Tempo de Serviço</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="tempserv"
+                            name="tempserv"
+                                        style="font-size: 0.8em;"
+                            
+                            required
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="statusativ" class="form-label text-success">Status</label>
+                        <select
+                            class="form-select"
+                            aria-label="Default"
+                            id="statusativ"
+                            name="statusativ"
+                                        style="font-size: 0.8em;"
+                        >
+                            <option selected disabled>Escolha o Status</option>
+                            <option value="A">Ativo</option>
+                            <option value="I">Inativo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="sitfunc" class="form-label text-success">Sit. Func</label>
+                        <select
+                        class="form-select"
+                        aria-label="Default"
+                        id="sitfunc"
+                        name="sitfunc"
+                        style="font-size: 0.8em;"
+                    >
+                        <option>Escolha a Sit. Func.</option>
+                        {% for key, value in choices_sitfunc %}
+                        <option value="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col-md-6">
+                        <!-- Input que receberá os GTOS -->
+                        <input type="hidden" id="gtos_own" name="gtos_own" style="font-size: 0.8em;">
+                        <label for="compgto" class="form-label text-success">GTO</label>
+                        <select class="form-select" aria-label="Default" id="compgto" name="compgto" style="font-size: 0.8em;">
+                            <option value="">Selecione um GTO</option>
+                            {% for gto in gtos %}
+                            <option value="{{ gto }}">{{ gto }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="tags-input" id="tags-input-gto"></div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <!-- Checkbox para indicar se exerce atividade especializada -->
+                        <div class="form-check mb-2">
+                            {% if user.ativ_esp == 'S' %}
+                            <input class="form-check-input" type="checkbox" id="atividadeEspecializadaCheckbox" checked>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" id="atividadeEspecializadaCheckbox">
+                            {% endif %}
+                            <label class="form-check-label" for="atividadeEspecializadaCheckbox">
+                                Exerce atividade especializada?
+                            </label>
+                        </div>
+                    
+                        <!-- Inputs e botão para adicionar atividade especializada -->
+                        <div class="input-group mb-3">
+                            <select class="form-select" id="atividadeSelect" disabled>
+                                <option value="">Selecione uma Atividade</option>
+                                <option value="Núcleo de Atenção e Resposta às Chuvas">Núcleo de Atenção e Resposta às Chuvas</option>
+                                <option value="Núcleo de Incêndio Florestal">Núcleo de Incêndio Florestal</option>
+                                <option value="Busca e Salvamento com Cães">Busca e Salvamento com Cães</option>
+                                <option value="Perito de Incêndio e Explosão">Perito de Incêndio e Explosão</option>
+                                <option value="Inspetor de Incêndio">Inspetor de Incêndio</option>
+                                <option value="Motorresgate">Motorresgate</option>
+                            </select>
+                            <input type="text" class="form-control" id="docDesignInput" placeholder="Doc de Design" disabled>
+                            <button class="btn btn-success" type="button" id="addAtividadeBtn" disabled>+</button>
+                        </div>
+                    
+                        <!-- Div para exibir as atividades especializadas adicionadas -->
+                        <div class="tags-input" id="tags-atividade"></div>
+                     <!-- Input escondido para armazenar os valores concatenados -->
+                    <input type="hidden" id="exp_own" name="exp_own" style="font-size: 0.8em;">
+                </div>
+            
+                </div>
+                <div class="row py-4">
+                    <div class="col-md-6">
+                        <label for="sexo" class="form-label text-success">Sexo</label>
+                        <select
+                            class="form-select"
+                            aria-label="Default"
+                            id="sexo"
+                            name="sexo"
+                                        style="font-size: 0.8em;"
+                        >
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="emailfunc" class="form-label text-success">Email Funcional</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="emailfunc"
+                            name="emailfunc"
+                            
+                                        style="font-size: 0.8em;"
+                            required
+                        />
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col-md-3">
+                        <label for="cob" class="form-label text-success">COB</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="cob"
+                            name="cob"
+                            style="font-size: 0.8em;"
+                            required
+
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="uniprinc" class="form-label text-success">Unidade Principal</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="uniprinc"
+                            name="uniprinc"
+                            style="font-size: 0.8em;"
+                            required
+
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="uniloc" class="form-label text-success">Unidade de Lotação</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="uniloc"
+                            name="uniloc"
+                            style="font-size: 0.8em;"
+                            required
+
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="priclassif" class="form-label text-success">Classificação Prioridade</label>
+                        <select
+                            class="form-select"
+                            aria-label="Default"
+                            id="priclassif"
+                            name="priclassif"
+                                        style="font-size: 0.8em;"
+                        >
+                            <option value="A">Alta</option>
+                            <option value="M">Média</option>
+                            <option value="B">Baixa</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EPIs - CIURB -->
+        <div class="container mt-5">
+            <form action="#" method="POST">
+                <!-- EPIs - CIURB -->
+                <div class="custom-container mb-5">
+                    <div class="custom-header">
+                        <h3>EPIs - CIURB</h3>
+                    </div>
+                    <div class="custom-form">
+                        <!-- Conjunto CIURB -->
+                        <h4 class="sub-title-main">Conjunto CIURB</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_possui">Possui Conjunto CIURB?</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="ciurb_conjunto_possui" id="ciurb_conjunto_possui_sim" value="sim">
+                                        <label class="label-special"  class="form-check-label" for="ciurb_conjunto_possui_sim">Sim</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="ciurb_conjunto_possui" id="ciurb_conjunto_possui_nao" value="nao">
+                                        <label class="label-special"  class="form-check-label" for="ciurb_conjunto_possui_nao">Não</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  class="label-special" for="ciurb_conjunto_jaquetatamanho">Tamanho da Jaqueta</label>
+                                    <select id="ciurb_conjunto_jaquetatamanho" class="form-control" name="ciurb_conjunto_jaquetatamanho">
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Grande">Grande</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_calcatamanho">Tamanho da Calça</label>
+                                    <select id="ciurb_conjunto_calcatamanho" class="form-control" name="ciurb_conjunto_calcatamanho">
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Grande">Grande</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_jaquetacomplemento">Complemento da Jaqueta</label>
+                                    <select id="ciurb_conjunto_jaquetacomplemento" class="form-control" name="ciurb_conjunto_jaquetacomplemento">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_calcacomplemento">Complemento da Calça</label>
+                                    <select id="ciurb_conjunto_calcacomplemento" class="form-control" name="ciurb_conjunto_calcacomplemento">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="ciurb_conjunto_estadodeconservacao" class="form-control" name="ciurb_conjunto_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_condicao">Condição</label>
+                                    <select id="ciurb_conjunto_condicao" class="form-control" name="ciurb_conjunto_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_marca">Marca</label>
+                                    <input type="text" class="form-control" id="ciurb_conjunto_marca" name="ciurb_conjunto_marca">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="ciurb_conjunto_modelo" name="ciurb_conjunto_modelo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="ciurb_conjunto_anofabricacao" name="ciurb_conjunto_anofabricacao">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="ciurb_conjunto_plannumber" name="ciurb_conjunto_plannumber">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="ciurb_conjunto_datapreenchimento" name="ciurb_conjunto_datapreenchimento">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="ciurb_conjunto_recebido" name="ciurb_conjunto_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_conjunto_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="ciurb_conjunto_datarecebimento" name="ciurb_conjunto_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Capacete CIURB -->
+                        <h4 class="sub-title-main mt-4">Capacete CIURB</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_cor">Cor</label>
+                                    <input type="text" class="form-control" id="ciurb_capacete_cor" name="ciurb_capacete_cor">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="ciurb_capacete_estadodeconservacao" class="form-control" name="ciurb_capacete_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_condicao">Condição</label>
+                                    <select id="ciurb_capacete_condicao" class="form-control" name="ciurb_capacete_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_marca">Marca</label>
+                                    <input type="text" class="form-control" id="ciurb_capacete_marca" name="ciurb_capacete_marca">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="ciurb_capacete_modelo" name="ciurb_capacete_modelo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="ciurb_capacete_anofabricacao" name="ciurb_capacete_anofabricacao">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="ciurb_capacete_plannumber" name="ciurb_capacete_plannumber">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="ciurb_capacete_datapreenchimento" name="ciurb_capacete_datapreenchimento">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="ciurb_capacete_recebido" name="ciurb_capacete_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_capacete_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="ciurb_capacete_datarecebimento" name="ciurb_capacete_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Luva CIURB -->
+                        <h4 class="mt-4 sub-title-main">Luva CIURB</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_circunferenciamao">Circunferência da Mão</label>
+                                    <select id="ciurb_luva_circunferenciamao" class="form-control" name="ciurb_luva_circunferenciamao">
+                                        <option value="12 a 15 cm">12 a 15 cm</option>
+                                        <option value="18 a 19 cm">18 a 19 cm</option>
+                                        <option value="19 a 20 cm">19 a 20 cm</option>
+                                        <option value="20 a 21,5 cm">20 a 21,5 cm</option>
+                                        <option value="21,5 a 23 cm">21,5 a 23 cm</option>
+                                        <option value="23 a 25 cm">23 a 25 cm</option>
+                                        <option value="25 a 28 cm">25 a 28 cm</option>
+                                        <option value="28 a 30 cm">28 a 30 cm</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="ciurb_luva_estadodeconservacao" class="form-control" name="ciurb_luva_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_condicao">Condição</label>
+                                    <select id="ciurb_luva_condicao" class="form-control" name="ciurb_luva_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_marca">Marca</label>
+                                    <input type="text" class="form-control" id="ciurb_luva_marca" name="ciurb_luva_marca">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="ciurb_luva_modelo" name="ciurb_luva_modelo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="ciurb_luva_anofabricacao" name="ciurb_luva_anofabricacao">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="ciurb_luva_plannumber" name="ciurb_luva_plannumber">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="ciurb_luva_datapreenchimento" name="ciurb_luva_datapreenchimento">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="ciurb_luva_recebido" name="ciurb_luva_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_luva_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="ciurb_luva_datarecebimento" name="ciurb_luva_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Balaclava CIURB -->
+                        <h4 class="mt-4 sub-title-main">Balaclava CIURB</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_camadas">Camadas</label>
+                                    <select id="ciurb_balaclava_camadas" class="form-control" name="ciurb_balaclava_camadas">
+                                        <option value="Simples">Simples</option>
+                                        <option value="Dupla">Dupla</option>
+                                        <option value="Tripla">Tripla</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="ciurb_balaclava_estadodeconservacao" class="form-control" name="ciurb_balaclava_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_condicao">Condição</label>
+                                    <select id="ciurb_balaclava_condicao" class="form-control" name="ciurb_balaclava_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_marca">Marca</label>
+                                    <input type="text" class="form-control" id="ciurb_balaclava_marca" name="ciurb_balaclava_marca">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="ciurb_balaclava_modelo" name="ciurb_balaclava_modelo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="ciurb_balaclava_anofabricacao" name="ciurb_balaclava_anofabricacao">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="ciurb_balaclava_plannumber" name="ciurb_balaclava_plannumber">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="ciurb_balaclava_datapreenchimento" name="ciurb_balaclava_datapreenchimento">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="ciurb_balaclava_recebido" name="ciurb_balaclava_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_balaclava_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="ciurb_balaclava_datarecebimento" name="ciurb_balaclava_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Bota CIURB -->
+                        <h4 class="mt-4 sub-title-main">Bota CIURB</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_tamanho">Tamanho</label>
+                                    <select id="ciurb_bota_tamanho" class="form-control" name="ciurb_bota_tamanho">
+                                        <option value="35">35</option>
+                                        <option value="36">36</option>
+                                        <option value="37">37</option>
+                                        <option value="38">38</option>
+                                        <option value="39">39</option>
+                                        <option value="40">40</option>
+                                        <option value="41">41</option>
+                                        <option value="42">42</option>
+                                        <option value="43">43</option>
+                                        <option value="44">44</option>
+                                        <option value="45">45</option>
+                                        <option value="46">46</option>
+                                        <option value="47">47</option>
+                                        <option value="48">48</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="ciurb_bota_estadodeconservacao" class="form-control" name="ciurb_bota_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_condicao">Condição</label>
+                                    <select id="ciurb_bota_condicao" class="form-control" name="ciurb_bota_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_marca">Marca</label>
+                                    <input type="text" class="form-control" id="ciurb_bota_marca" name="ciurb_bota_marca">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="ciurb_bota_modelo" name="ciurb_bota_modelo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="ciurb_bota_anofabricacao" name="ciurb_bota_anofabricacao">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="ciurb_bota_plannumber" name="ciurb_bota_plannumber">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="ciurb_bota_datapreenchimento" name="ciurb_bota_datapreenchimento">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="ciurb_bota_recebido" name="ciurb_bota_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special"  for="ciurb_bota_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="ciurb_bota_datarecebimento" name="ciurb_bota_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         
+                <!-- EPIs - Multimissão -->
+                <div class="custom-container mb-5">
+                    <div class="custom-header">
+                        <h3>EPIs - Multimissão</h3>
+                    </div>
+                    <div class="custom-form">
+                        <!-- Conjunto Multimissão -->
+                        <h4 class="sub-title-main">Conjunto Multimissão</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_possui">Possui Conjunto Multimissão?</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="multimissao_conjunto_possui" id="multimissao_conjunto_possui_sim" value="sim">
+                                        <label class="label-special" class="form-check-label" for="multimissao_conjunto_possui_sim">Sim</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="multimissao_conjunto_possui" id="multimissao_conjunto_possui_nao" value="nao">
+                                        <label class="label-special" class="form-check-label" for="multimissao_conjunto_possui_nao">Não</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_jaquetatamanho">Tamanho da Jaqueta</label>
+                                    <select id="multimissao_conjunto_jaquetatamanho" class="form-control" name="multimissao_conjunto_jaquetatamanho">
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Grande">Grande</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_calcatamanho">Tamanho da Calça</label>
+                                    <select id="multimissao_conjunto_calcatamanho" class="form-control" name="multimissao_conjunto_calcatamanho">
+                                        <option value="Pequeno">Pequeno</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Grande">Grande</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_jaquetacomplemento">Complemento da Jaqueta</label>
+                                    <select id="multimissao_conjunto_jaquetacomplemento" class="form-control" name="multimissao_conjunto_jaquetacomplemento">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_calcacomplemento">Complemento da Calça</label>
+                                    <select id="multimissao_conjunto_calcacomplemento" class="form-control" name="multimissao_conjunto_calcacomplemento">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <!-- Outras opções -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="multimissao_conjunto_estadodeconservacao" class="form-control" name="multimissao_conjunto_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_condicao">Condição</label>
+                                    <select id="multimissao_conjunto_condicao" class="form-control" name="multimissao_conjunto_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_marca">Marca</label>
+                                    <input type="text" class="form-control" id="multimissao_conjunto_marca" name="multimissao_conjunto_marca">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="multimissao_conjunto_modelo" name="multimissao_conjunto_modelo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="multimissao_conjunto_anofabricacao" name="multimissao_conjunto_anofabricacao">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="multimissao_conjunto_plannumber" name="multimissao_conjunto_plannumber">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="multimissao_conjunto_datapreenchimento" name="multimissao_conjunto_datapreenchimento">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="multimissao_conjunto_recebido" name="multimissao_conjunto_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_conjunto_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="multimissao_conjunto_datarecebimento" name="multimissao_conjunto_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Capacete Multimissão -->
+                        <h4 class="sub-title-main mt-4">Capacete Multimissão</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_cor">Cor</label>
+                                    <input type="text" class="form-control" id="multimissao_capacete_cor" name="multimissao_capacete_cor">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_estadodeconservacao">Estado de Conservação</label>
+                                    <select id="multimissao_capacete_estadodeconservacao" class="form-control" name="multimissao_capacete_estadodeconservacao">
+                                        <option value="Ótimo">Ótimo</option>
+                                        <option value="Bom">Bom</option>
+                                        <option value="Razoável">Razoável</option>
+                                        <option value="Ruim">Ruim</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_condicao">Condição</label>
+                                    <select id="multimissao_capacete_condicao" class="form-control" name="multimissao_capacete_condicao">
+                                        <option value="P">Procede</option>
+                                        <option value="NP">Não Procede</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_marca">Marca</label>
+                                    <input type="text" class="form-control" id="multimissao_capacete_marca" name="multimissao_capacete_marca">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_modelo">Modelo</label>
+                                    <input type="text" class="form-control" id="multimissao_capacete_modelo" name="multimissao_capacete_modelo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_anofabricacao">Ano de Fabricação</label>
+                                    <input type="number" class="form-control" id="multimissao_capacete_anofabricacao" name="multimissao_capacete_anofabricacao">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_plannumber">Plano de Distribuição</label>
+                                    <input type="number" class="form-control" id="multimissao_capacete_plannumber" name="multimissao_capacete_plannumber">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_datapreenchimento">Data de Preenchimento</label>
+                                    <input type="date" class="form-control" id="multimissao_capacete_datapreenchimento" name="multimissao_capacete_datapreenchimento">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_recebido">Recebido</label>
+                                    <input type="checkbox" class="form-check-input" id="multimissao_capacete_recebido" name="multimissao_capacete_recebido">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="label-special" for="multimissao_capacete_datarecebimento">Data de Recebimento</label>
+                                    <input type="date" class="form-control" id="multimissao_capacete_datarecebimento" name="multimissao_capacete_datarecebimento">
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Adicione outras seções para Luva, Balaclava, Bota Multimissão seguindo a mesma estrutura -->
+        
+                    </div>
+                </div>
+                <!-- Botão de submissão -->
+        <div class="text-center">
+            <button type="submit" class="button-custom">Cadastrar</button>
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Funções para o campo de GTO
+        const tagsInputGTO = document.getElementById('tags-input-gto');
+        const tagsSelectGTO = document.getElementById('compgto');
+        const gtosOwnInput = document.getElementById('gtos_own');
+    
+        let gtoList = [];
+    
+        // Função para carregar os GTOS iniciais
+        function loadInitialGtoTags(gtos_user) {
+            if (gtos_user) {
+                const gtos = gtos_user.split(';'); // Separar pelos ';'
+                gtos.forEach(function (gto) {
+                    gto = gto.trim();
+                    if (gto && !gtoTagExists(gto)) {
+                        gtoList.push(gto);
+                        renderGtoTag(gto);
+                    }
+                });
+                updateGtoOwnInput();
+            }
+        }
+    
+        // Adicionar a tag ao selecionar no select
+        tagsSelectGTO.addEventListener('change', function () {
+            const selectedGto = tagsSelectGTO.value.trim();
+            if (selectedGto && !gtoTagExists(selectedGto)) {
+                addGtoTag(selectedGto);
+                tagsSelectGTO.value = ''; // Resetar o select após a seleção
+            }
+        });
+    
+        function addGtoTag(text) {
+            gtoList.push(text);
+            renderGtoTag(text);
+            updateGtoOwnInput();
+        }
+    
+        function renderGtoTag(text) {
+            const tagElement = document.createElement('span');
+            tagElement.classList.add('tag');
+            tagElement.textContent = text;
+    
+            tagElement.style.fontSize = '0.8em';
+    
+            const removeTagElement = document.createElement('span');
+            removeTagElement.classList.add('remove-tag');
+            removeTagElement.textContent = 'x';
+            removeTagElement.addEventListener('click', function () {
+                removeGtoTag(text);
+                tagsInputGTO.removeChild(tagElement);
+            });
+    
+            tagElement.appendChild(removeTagElement);
+            tagsInputGTO.appendChild(tagElement);
+        }
+    
+        function removeGtoTag(text) {
+            const index = gtoList.indexOf(text);
+            if (index > -1) {
+                gtoList.splice(index, 1);
+                updateGtoOwnInput();
+            }
+        }
+    
+        function updateGtoOwnInput() {
+            gtosOwnInput.value = gtoList.join(';');
+        }
+    
+        function gtoTagExists(text) {
+            return gtoList.includes(text);
+        }
+    
+        // Carregar os GTOS iniciais do input oculto
+        const gtos_user = gtosOwnInput.value;
+        if (gtos_user) {
+            loadInitialGtoTags(gtos_user);
+        }
+    
+        // Funções para o campo de Atividades Especializadas
+        const checkbox = document.getElementById('atividadeEspecializadaCheckbox');
+        const atividadeSelect = document.getElementById('atividadeSelect');
+        const docDesignInput = document.getElementById('docDesignInput');
+        const addAtividadeBtn = document.getElementById('addAtividadeBtn');
+        const tagsAtividadeInput = document.getElementById('tags-atividade');
+        const expOwnInput = document.getElementById('exp_own');
+    
+        let atividadeList = [];
+    
+        // Função para carregar as atividades iniciais
+        function loadInitialTags(ativ_esps) {
+            const atividades = ativ_esps.split(';');
+            atividades.forEach(function (atividade) {
+                if (atividade.trim() && !atividadeTagExists(atividade)) {
+                    atividadeList.push(atividade); // Adiciona à lista
+                    renderAtividadeTag(atividade);
+                }
+            });
+            updateExpOwnInput(); // Atualiza o input após carregar as tags
+        }
+    
+        // Ativar/desativar select, input e botão baseado no checkbox
+        checkbox.addEventListener('change', function () {
+            const isChecked = !checkbox.checked;
+            atividadeSelect.disabled = isChecked;
+            docDesignInput.disabled = isChecked;
+            addAtividadeBtn.disabled = isChecked;
+        });
+    
+        // Adicionar a atividade especializada ao clicar no botão "+"
+        addAtividadeBtn.addEventListener('click', function () {
+            const atividade = atividadeSelect.value.trim();
+            const docDesign = docDesignInput.value.trim();
+    
+            if (!atividade || !docDesign) {
+                alert('Por favor, preencha ambos os campos.');
+                return;
+            }
+    
+            const tagText = `${atividade} - ${docDesign}`;
+            addAtividadeTag(tagText);
+    
+            // Limpar os inputs
+            atividadeSelect.value = '';
+            docDesignInput.value = '';
+        });
+    
+        function addAtividadeTag(text) {
+            if (atividadeTagExists(text)) return;
+    
+            atividadeList.push(text);
+            renderAtividadeTag(text);
+            updateExpOwnInput();
+        }
+    
+        function renderAtividadeTag(text) {
+            const tagElement = document.createElement('span');
+            tagElement.classList.add('tag');
+            tagElement.textContent = text;
+    
+            tagElement.style.fontSize = '0.8em';
+    
+            const removeTagElement = document.createElement('span');
+            removeTagElement.classList.add('remove-tag');
+            removeTagElement.textContent = 'x';
+            removeTagElement.addEventListener('click', function () {
+                removeAtividadeTag(text);
+                tagsAtividadeInput.removeChild(tagElement);
+            });
+    
+            tagElement.appendChild(removeTagElement);
+            tagsAtividadeInput.appendChild(tagElement);
+        }
+    
+        function removeAtividadeTag(text) {
+            const index = atividadeList.indexOf(text);
+            if (index > -1) {
+                atividadeList.splice(index, 1);
+            }
+            updateExpOwnInput();
+        }
+    
+        function updateExpOwnInput() {
+            expOwnInput.value = atividadeList.join(';');
+        }
+    
+        function atividadeTagExists(text) {
+            return atividadeList.includes(text);
+        }
+    
+        // Variável inicial de atividades especializadas (simulação)
+
+    });
+    
+</script>
+{% endblock %}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-select with Removable Tags</title>
+    <style>
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .tags-input .tag {
+            background-color: #add8e6;
+            border-radius: 3px;
+            padding: 5px;
+            margin: 2px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tags-input .tag .remove-tag {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .tags-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <select id="compgto">
+        <option value="nenhum" selected>Nenhum</option>
+        <option value="tentativa-suicidio">Atendimento a Tentativa de Suicídio</option>
+        <option value="atendimento-pre-hospitalar">Atendimento Pré-Hospitalar</option>
+        <option value="resgate-estruturas-colapsadas">Busca e Resgate em Estruturas Colapsadas</option>
+        <option value="resgate-caes">Busca, Resgate e Salvamento com Cães</option>
+        <option value="classificacao-internacional">Classificação Internacional</option>
+        <option value="incendio-florestal">Incêndio Florestal</option>
+        <option value="incendio-urbano">Incêndio Urbano</option>
+        <option value="investigacao-incendio">Investigação de Incêndio</option>
+        <option value="mergulho-salvamento">Mergulho Autônomo / Salvamento Aquático</option>
+        <option value="movimentos-massas">Movimentos de Massas, Enchentes e Inundações</option>
+        <option value="produtos-perigosos">Produtos Perigosos</option>
+        <option value="protecao-defesa-civil">Proteção e Defesa Civil</option>
+        <option value="salvamento-altura">Salvamento em Altura</option>
+        <option value="salvamento-terrestre">Salvamento Terrestre</option>
+        <option value="salvamento-veicular">Salvamento Veicular</option>
+        <!-- Add more options as needed -->
+    </select>
+
+    <div class="tags-input" id="tags-input">
+        <!-- Tags will appear here -->
+    </div>
+
+    <script>
+        const tagsInput = document.getElementById('tags-input');
+        const tagsSelect = document.getElementById('compgto');
+
+        tagsSelect.addEventListener('change', function () {
+            addTag(tagsSelect.value);
+            tagsSelect.value = '';
+        });
+
+        function addTag(tag) {
+            if (tag.trim() === '' || tagExists(tag)) return;
+
+            const tagElement = document.createElement('span');
+            tagElement.classList.add('tag');
+            tagElement.textContent = tag;
+
+            const removeTagElement = document.createElement('span');
+            removeTagElement.classList.add('remove-tag');
+            removeTagElement.textContent = 'x';
+            removeTagElement.addEventListener('click', function () {
+                tagsInput.removeChild(tagElement);
+            });
+
+            tagElement.appendChild(removeTagElement);
+            tagsInput.appendChild(tagElement);
+        }
+
+        function tagExists(tag) {
+            const tags = document.querySelectorAll('.tags-input .tag');
+            for (let i = 0; i < tags.length; i++) {
+                if (tags[i].textContent.replace('x', '').trim() === tag) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>
