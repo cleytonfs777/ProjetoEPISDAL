@@ -195,4 +195,4 @@ def create_user_and_epis(request):
             "Salvamento Terrestre",
             "Salvamento Veicula"
         ]
-        return render(request, 'create_user_and_epis.html', {'choices_postgrad': choices_postgrad, 'choices_sitfunc': choices_sitfunc, 'gtos': gtos})
+        return render(request, 'create_user.html', {'choices_postgrad': choices_postgrad, 'choices_sitfunc': choices_sitfunc, 'gtos': gtos})
