@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     # apps criados
     'epis',
     'usuarios',
+    'planodist',
 ]
 
 MIDDLEWARE = [

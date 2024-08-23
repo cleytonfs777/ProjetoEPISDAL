@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Plano de Distribuição{% endblock %}
+
+{% block style %}
+.custom-container {
+    margin-top: 20px;
+}
+.custom-header {
+    margin-bottom: 20px;
+}
+{% endblock %}
+
+{% block max-title %}Plano de Distribuição{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="custom-container">
+        <button id="adicionar-plano-btn" class="btn btn-primary mb-3">Adicionar Plano</button>
+        <div id="formulario-container">
+            <form id="plano-form">
+                <div class="form-row d-flex">
+                    <div class="form-group col-md-6">
+                        <label for="numero-ano">Número/Ano</label>
+                        <input type="text" class="form-control" id="numero-ano" placeholder="Número/Ano">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="data-elaboracao">Data Elaboração</label>
+                        <input type="date" class="form-control" id="data-elaboracao">
+                    </div>
+                </div>
+
+                <div id="epi-rows-container">
+                    <!-- Novas linhas de EPI serão inseridas aqui -->
+                </div>
+
+                <button id="gerar-plano-btn" type="submit" class="btn btn-success mt-3" disabled>Gerar Plano</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('adicionar-plano-btn').addEventListener('click', adicionarLinhaEPI);
+
+    function adicionarLinhaEPI() {
+        const container = document.getElementById('epi-rows-container');
+
+        const row = document.createElement('div');
+        row.className = 'form-row mb-3 d-flex p-2 bg-light';
+
+        // Select para EPI
+        const epiDiv = document.createElement('div');
+        epiDiv.className = 'form-group col-md-3';
+        const epiLabel = document.createElement('label');
+        epiLabel.innerText = 'EPI';
+        const epiSelect = document.createElement('select');
+        epiSelect.className = 'form-control';
+        epiSelect.innerHTML = `
+            <option value="CIURB">CIURB</option>
+            <option value="MULTIMISSAO">MULTIMISSÃO</option>
+            <option value="SALVAMENTO">SALVAMENTO</option>
+            <option value="MOTORRESGATE">MOTORRESGATE</option>
+        `;
+        epiSelect.addEventListener('change', atualizarOpcoesTipo);  // Atualiza as opções do select "Tipo" ao mudar o EPI
+        epiDiv.appendChild(epiLabel);
+        epiDiv.appendChild(epiSelect);
+
+        // Select para Tipo
+        const tipoDiv = document.createElement('div');
+        tipoDiv.className = 'form-group col-md-3';
+        const tipoLabel = document.createElement('label');
+        tipoLabel.innerText = 'Tipo';
+        const tipoSelect = document.createElement('select');
+        tipoSelect.className = 'form-control';
+        tipoDiv.appendChild(tipoLabel);
+        tipoDiv.appendChild(tipoSelect);
+
+        // Inicializa as opções do select "Tipo"
+        atualizarOpcoesTipo({ target: epiSelect, tipoSelect: tipoSelect });
+
+        // Input para Quantidade
+        const quantidadeDiv = document.createElement('div');
+        quantidadeDiv.className = 'form-group col-md-2';
+        const quantidadeLabel = document.createElement('label');
+        quantidadeLabel.innerText = 'Quantidade';
+        const quantidadeInput = document.createElement('input');
+        quantidadeInput.type = 'number';
+        quantidadeInput.className = 'form-control';
+        quantidadeDiv.appendChild(quantidadeLabel);
+        quantidadeDiv.appendChild(quantidadeInput);
+
+        // Selects para Intervalo de Tamanhos
+        const intervaloDiv = document.createElement('div');
+        intervaloDiv.className = 'form-group col-md-4';
+        const intervaloLabel = document.createElement('label');
+        intervaloLabel.innerText = 'Intervalo de Tamanhos';
+        const intervaloRow = document.createElement('div');
+        intervaloRow.className = 'form-row';
+        
+        const initSelectDiv = document.createElement('div');
+        initSelectDiv.className = 'col-md-6';
+        const initSelect = document.createElement('select');
+        initSelect.className = 'form-control';
+        initSelect.innerHTML = `<option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option>`;
+        initSelectDiv.appendChild(initSelect);
+
+        const fimSelectDiv = document.createElement('div');
+        fimSelectDiv.className = 'col-md-6';
+        const fimSelect = document.createElement('select');
+        fimSelect.className = 'form-control';
+        fimSelect.innerHTML = initSelect.innerHTML;
+        fimSelectDiv.appendChild(fimSelect);
+
+        intervaloRow.appendChild(initSelectDiv);
+        intervaloRow.appendChild(fimSelectDiv);
+        
+        intervaloDiv.appendChild(intervaloLabel);
+        intervaloDiv.appendChild(intervaloRow);
+
+        row.appendChild(epiDiv);
+        row.appendChild(tipoDiv);
+        row.appendChild(quantidadeDiv);
+        row.appendChild(intervaloDiv);
+
+        container.appendChild(row);
+
+        // Habilitar o botão "Gerar Plano" após adicionar uma linha
+        document.getElementById('gerar-plano-btn').disabled = false;
+    }
+
+    function atualizarOpcoesTipo(event) {
+        const tipoSelect = event.tipoSelect || event.target.closest('.form-row').querySelector('select:nth-child(2)');
+        const epi = event.target.value;
+
+        const tipos = {
+            'CIURB': ['Conjunto', 'Luva', 'Capacete', 'Balaclava', 'Bota'],
+            'MULTIMISSAO': ['Conjunto', 'Luva', 'Capacete', 'Bota'],
+            'SALVAMENTO': ['Capacete Aquático', 'Capacete Veicular', 'Luva Veicular'],
+            'MOTORRESGATE': ['Conjunto', 'Luva', 'Capacete', 'Bota']
+        };
+
+        tipoSelect.innerHTML = '';
+        tipos[epi].forEach(tipo => {
+            const option = document.createElement('option');
+            option.value = tipo;
+            option.innerText = tipo;
+            tipoSelect.appendChild(option);
+        });
+    }
+
+    document.getElementById('plano-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        alert('Plano gerado com sucesso!');
+    });
+</script>
+
+
+{% endblock %}

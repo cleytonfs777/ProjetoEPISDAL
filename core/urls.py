@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('usuarios.urls')),
     path('epis/', include('epis.urls')),
+    path('planodist/', include('planodist.urls')),
 ]
