@@ -1,11 +1,14 @@
+from datetime import date
+from epis.models import ConjuntoEPI, CapaceteEPI, LuvaEPI, BalaclavaEPI, BotaEPI, CapaceteAquaticoEPI, CapaceteVeicularEPI, LuvaVeicularEPI
+from usuarios.models import Users
 import os
 import django
-from usuarios.models import Users
-from epis.models import ConjuntoEPI, CapaceteEPI, LuvaEPI, BalaclavaEPI, BotaEPI, CapaceteAquaticoEPI, CapaceteVeicularEPI, LuvaVeicularEPI
-from datetime import date
 
-# Configurar o ambiente Django
+# Defina o módulo de configurações do Django
+# Substitua 'core' pelo nome da sua pasta de configurações, se for diferente
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+
+# Configurar o Django
 django.setup()
 
 

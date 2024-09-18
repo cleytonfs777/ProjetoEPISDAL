@@ -1,6 +1,11 @@
+from datetime import date
 from django.contrib import auth, messages
 from django.http import HttpResponse
 from django.urls import reverse
+
+from epis.models import BalaclavaEPI, BotaEPI, CapaceteAquaticoEPI, CapaceteEPI, CapaceteVeicularEPI, ConjuntoEPI, LuvaEPI, LuvaVeicularEPI
+from populate.read_militares import ler_arquivo_xlsx
+from usuarios.utils import *
 
 from .models import Users
 
@@ -196,3 +201,687 @@ def create_user_and_epis(request):
             "Salvamento Veicula"
         ]
         return render(request, 'create_user.html', {'choices_postgrad': choices_postgrad, 'choices_sitfunc': choices_sitfunc, 'gtos': gtos})
+
+
+@login_required
+def criar_usuario_ficticio_view(request):
+
+    # Criar o usuário fictício com campos herdados de AbstractUser
+    usuario = Users.objects.create(
+        username='usuario_ficticio',  # Definir o username
+        first_name='João',  # Definir o primeiro nome
+        last_name='Silva',  # Definir o sobrenome (opcional)
+        email='usuario@exemplo.com',  # Definir um email
+        numbm='123456',
+        postgrad='3sgt',
+        date_include='2024-01-01',
+        time_service_days=3650,
+        status='A',
+        sitfunc='2',
+        gto='12345',
+        ativ_esp='S',
+        list_ativ_esp='Motorresgate',
+        cob=5,
+        unid_lot='Unidade A',
+        unid_princ='Unidade B',
+        sexo='M',
+        priorit='A'
+    )
+
+    # Definir a senha padrão 'cbmmg193' usando o método set_password
+    usuario.set_password('cbmmg193')
+    usuario.save()  # Salvar o usuário após definir a senha
+
+    # Criar EPIs CIURB
+    ConjuntoEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca X',
+        modelo='Modelo Y',
+        anofabricacao=2020,
+        plannumber=1,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        jaquetatamanho='Médio',
+        jaquetacomplemento=1,
+        calcatamanho='Médio',
+        calcacomplemento=1
+    )
+
+    CapaceteEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca X',
+        modelo='Modelo Y',
+        anofabricacao=2020,
+        plannumber=1,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        cor='Vermelho'
+    )
+
+    ciurb_luva = LuvaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca X',
+        modelo='Modelo Y',
+        anofabricacao=2020,
+        plannumber=1,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        circunferenciamao='19 a 20 cm'
+    )
+
+    ciurb_balaclava = BalaclavaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca X',
+        modelo='Modelo Y',
+        anofabricacao=2020,
+        plannumber=1,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        camadas='Dupla'
+    )
+
+    ciurb_bota = BotaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca X',
+        modelo='Modelo Y',
+        anofabricacao=2020,
+        plannumber=1,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        tamanho=42
+    )
+
+    # Criar EPIs Multimissão
+    multi_conjunto = ConjuntoEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca X',
+        modelo='Modelo Y',
+        anofabricacao=2021,
+        plannumber=2,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        jaquetatamanho='Grande',
+        jaquetacomplemento=2,
+        calcatamanho='Grande',
+        calcacomplemento=2
+    )
+
+    multi_capacete = CapaceteEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Ótimo',
+        condicao='P',
+        marca='Marca Z',
+        modelo='Modelo W',
+        anofabricacao=2021,
+        plannumber=2,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        cor='Azul'
+    )
+
+    multi_luva = LuvaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Ótimo',
+        condicao='P',
+        marca='Marca Y',
+        modelo='Modelo X',
+        anofabricacao=2021,
+        plannumber=2,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        circunferenciamao='20 a 21,5 cm'
+    )
+
+    multi_bota = BotaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca A',
+        modelo='Modelo B',
+        anofabricacao=2021,
+        plannumber=2,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        tamanho=43
+    )
+
+    # Criar EPIs Salvamento
+    salv_capacete_aqu = CapaceteAquaticoEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca B',
+        modelo='Modelo C',
+        anofabricacao=2022,
+        plannumber=3,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        cor='Amarelo'
+    )
+
+    salv_capacete_alt = CapaceteVeicularEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Bom',
+        condicao='P',
+        marca='Marca D',
+        modelo='Modelo E',
+        anofabricacao=2022,
+        plannumber=3,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        cor='Preto'
+    )
+
+    salv_luva_veic = LuvaVeicularEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Razoável',
+        condicao='P',
+        marca='Marca C',
+        modelo='Modelo D',
+        anofabricacao=2022,
+        plannumber=3,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        circunferenciamao='21,5 a 23 cm'
+    )
+
+    # Criar EPIs Motorresgate
+    motresg_conjunto = ConjuntoEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Ótimo',
+        condicao='P',
+        marca='Marca E',
+        modelo='Modelo F',
+        anofabricacao=2023,
+        plannumber=4,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        jaquetatamanho='Extra Grande',
+        jaquetacomplemento=3,
+        calcatamanho='Extra Grande',
+        calcacomplemento=3
+    )
+
+    motresg_capacete = CapaceteEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Ótimo',
+        condicao='P',
+        marca='Marca F',
+        modelo='Modelo G',
+        anofabricacao=2023,
+        plannumber=4,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        cor='Branco'
+    )
+
+    motresg_luva = LuvaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Ótimo',
+        condicao='P',
+        marca='Marca G',
+        modelo='Modelo H',
+        anofabricacao=2023,
+        plannumber=4,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        circunferenciamao='23 a 25 cm'
+    )
+
+    motresg_bota = BotaEPI.objects.create(
+        user=usuario,
+        possui=True,
+        estadodeconservacao='Ótimo',
+        condicao='P',
+        marca='Marca H',
+        modelo='Modelo I',
+        anofabricacao=2023,
+        plannumber=4,
+        datapreenchimento=date.today(),
+        recebido=True,
+        datarecebimento=date.today(),
+        tamanho=44
+    )
+
+    # Após a criação, redirecionar ou retornar uma mensagem
+    return render(request, 'usuario_criado.html', {'usuario': usuario})
+
+
+def formatar_data_para_iso(data):
+    # Verificar se o dado já está no formato 'YYYY-MM-DD'
+    if isinstance(data, str):
+        try:
+            # Tentar converter a string diretamente para uma data
+            # Verificar se já está no formato correto
+            datetime.strptime(data, "%Y-%m-%d")
+            return data  # Se já está no formato 'YYYY-MM-DD', retornar diretamente
+        except ValueError:
+            try:
+                # Se não estiver no formato 'YYYY-MM-DD', tentar converter do formato 'DD/MM/YYYY'
+                data_formatada = datetime.strptime(data, "%d/%m/%Y").date()
+                return data_formatada.isoformat()  # Converter para formato ISO 'YYYY-MM-DD'
+            except ValueError:
+                return None  # Se não conseguir converter, retorna None
+    elif isinstance(data, datetime):
+        # Se for um objeto datetime, converter para formato ISO
+        return data.date().isoformat()
+    else:
+        return None  # Retornar None se não for nem string nem datetime
+
+
+@login_required
+def popular_lista_usuarios_view(request):
+
+    lista_usuarios = ler_arquivo_xlsx()
+    print("LISTA DE USUÁRIOS")
+    print(lista_usuarios)
+
+    for usuario in lista_usuarios:
+        print("USUARIO DO SISTEMA")
+        print(usuario)
+
+        nomefull = separar_nomes(usuario[3])
+
+        atividade = 'I' if usuario[6] == 'Inativo' else 'A'
+        situacao = situacao_func(usuario[7])
+
+        cob_unip_unilot = cob_princ_lot(usuario[13])
+
+        "quero uma função que recebe uma string e converte todas as letras"
+
+        # 31 - Marca ou não possui - NÃO POSSUI ou "" (UPPERCASE) # 32 - Ano de Fabricação # 33 - Estado de Conservacao (PROPERCASE) # 17 - Tamanho da jaqueta # 18 - Tamanho da calça
+        # Dados de 27 a 30 dizem respeito a capacete
+        # Dados de 37 a 39, e 16 (Tamanho da luva) dizem respeito a luva
+        # Dados de 40 a 42 dizem respeito a balaclava
+        # Dados de 34 a 36, e 14 dizem respeito a bota
+        classif_ciurb = [usuario[31], usuario[32],
+                         usuario[33], usuario[17], usuario[18], usuario[27], usuario[28], usuario[29], usuario[30], usuario[37], usuario[38], usuario[39], usuario[16], usuario[40], usuario[41], usuario[42], usuario[34], usuario[35], usuario[36], usuario[14]]
+
+        # Dados de 21 a 23 dizem respeito a conjunto de multimissão
+        # Dados de 16 diz respeito a tamanho de luva(incendio)
+        # Dados de 24 a 26 dizem respeito a bota multimissao # 14 tamano coturno
+        classif_multimiss = [usuario[21],
+                             usuario[22], usuario[23], usuario[16], usuario[24], usuario[25], usuario[26], usuario[14]]
+        # Dados de 43 a 46 dizem respeito a capacete de salvamento em altura
+        # Dados de 47 a 49 dizem respeito a luva de salvamento veicular
+        classif_salvamento = [usuario[43],
+                              usuario[44], usuario[45], usuario[46], usuario[47], usuario[48], usuario[49], usuario[15]]
+
+        # Dados de 16 diz respeito ao tamanho da luva
+        classif_motorresgate = [usuario[16], usuario[14]]
+
+        # GERANDO DICIONARIOS DE CADA GRUPO DE EPI
+        result_ciurb = generate_ciurb_epi(classif_ciurb)
+        result_multimiss = generate_multimiss_epi(classif_multimiss)
+        result_salvamento = generate_salvamento_epi(classif_salvamento)
+        result_motorresgate = generate_motorresgate_epi(classif_motorresgate)
+
+        # CRIANDO O USUARIO FICTICIO
+        # print("RESULT CONJUNTO CIURB")
+        # print(result_ciurb)
+
+        # print("RESULT CONJUNTO MULTIMISS")
+        # print(result_multimiss)
+
+        # print("RESULT CONJUNTO SALVAMENTO")
+        # print(result_salvamento)
+
+        # print("RESULT CONJUNTO MOTOR RESGATE")
+        # print(result_motorresgate)
+
+        # Criar o usuário fictício com campos herdados de AbstractUser
+        usuario = Users.objects.create(
+            username=str(criar_username(usuario[3])),  # Definir o username
+            first_name=nomefull[0],  # Definir o primeiro nome
+            last_name=nomefull[1],  # Definir o sobrenome (opcional)
+            email=f"{criar_username(usuario[3])}@bombeiros.mg.gov.br",
+            numbm=usuario[0],
+            postgrad=converter_funtion(usuario[1]),
+            date_include=usuario[4],
+            time_service_days=dias_desde_data(usuario[4]),
+            status=atividade,
+            sitfunc=situacao,
+            gto='',
+            ativ_esp='N',
+            list_ativ_esp='',
+            cob=cob_unip_unilot[0],
+            unid_lot=cob_unip_unilot[1],
+            unid_princ=cob_unip_unilot[2],
+            sexo=usuario[11],
+            priorit='',
+        )
+
+#         print(f"""
+#         # Criar o usuário fictício com campos herdados de AbstractUser
+#         usuario = Users.objects.create(
+#             username={str(criar_username(usuario[3]))},  # Definir o username
+#             first_name={nomefull[0]},  # Definir o primeiro nome
+#             last_name={nomefull[1]},  # Definir o sobrenome (opcional)
+#             email={f"{criar_username(usuario[3])}@bombeiros.mg.gov.br"},
+#             numbm={usuario[0]},
+#             postgrad={converter_funtion(usuario[1])},
+#             date_include={formatar_data_para_iso(usuario[4])},
+#             time_service_days={dias_desde_data(usuario[4])},
+#             status={atividade},
+#             sitfunc={situacao},
+#             gto='',
+#             ativ_esp='N',
+#             list_ativ_esp='',
+#             cob={cob_unip_unilot[0]},
+#             unid_lot={cob_unip_unilot[1]},
+#             unid_princ={cob_unip_unilot[2]},
+#             sexo={usuario[11]},
+#             priorit='',
+#         )
+# """)
+
+#         return HttpResponse("Usuario criado com sucesso!")
+
+        # Definir a senha padrão 'cbmmg193' usando o método set_password
+        # filipe.oliveira
+        usuario.set_password('cbmmg193')
+        usuario.save()  # Salvar o usuário após definir a senha
+
+        # # Criar EPIs CIURB
+        # ConjuntoEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_ciurb['possui_conj_ciurb'],
+        #     estadodeconservacao=result_ciurb['estadodeconservacao_conj'],
+        #     condicao='P',
+        #     marca=result_ciurb['marca_conj'],
+        #     modelo=result_ciurb['modelo_conj'],
+        #     anofabricacao=result_ciurb['ano_fab_conj'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     jaquetatamanho=result_ciurb['jaquetatamanho'],
+        #     jaquetacomplemento=result_ciurb['jaquetacomplemento'],
+        #     calcatamanho=result_ciurb['calcatamanho'],
+        #     calcacomplemento=result_ciurb['calcacomplemento'],
+        # )
+
+        # CapaceteEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_ciurb['possui_cap_ciurb'],
+        #     estadodeconservacao=result_ciurb['estadodeconservacao_cap'],
+        #     condicao='P',
+        #     marca=result_ciurb['marca_cap'],
+        #     modelo=result_ciurb['modelo_cap'],
+        #     anofabricacao=result_ciurb['ano_fab_cap'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     cor=result_ciurb['cor_cap'],
+        # )
+
+        # ciurb_luva = LuvaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_ciurb['possui_luv_ciurb'],
+        #     estadodeconservacao=result_ciurb['estadodeconservacao_luv'],
+        #     condicao='P',
+        #     marca=result_ciurb['marca_luv'],
+        #     modelo=result_ciurb['modelo_luv'],
+        #     anofabricacao=result_ciurb['ano_fab_luv'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     circunferenciamao=result_ciurb['circunferenciamao'],
+        # )
+
+        # ciurb_balaclava = BalaclavaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_ciurb['possui_bal_ciurb'],
+        #     estadodeconservacao=result_ciurb['estadodeconservacao_bal_ciurb'],
+        #     condicao='P',
+        #     marca=result_ciurb['marca_bal_ciurb'],
+        #     modelo=result_ciurb['modelo_bal_ciurb'],
+        #     anofabricacao=result_ciurb['ano_fab_bal_ciurb'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     camadas=result_ciurb['camadas_bal_ciurb'],
+        # )
+
+        # ciurb_bota = BotaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_ciurb['possui_bot_ciurb'],
+        #     estadodeconservacao=result_ciurb['estadodeconservacao_bot_ciurb'],
+        #     condicao='P',
+        #     marca=result_ciurb['marca_bot_ciurb'],
+        #     modelo=result_ciurb['modelo_bot_ciurb'],
+        #     anofabricacao=result_ciurb['ano_fab_bot_ciurb'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     tamanho=result_ciurb['numero_bot_cirurb'],
+        # )
+
+        # # Criar EPIs Multimissão
+        # multi_conjunto = ConjuntoEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_multimiss['possui_conj_mult'],
+        #     estadodeconservacao=result_multimiss['estadodeconservacao_conj'],
+        #     condicao='P',
+        #     marca=result_multimiss['marca_conj'],
+        #     modelo=result_multimiss['modelo_conj'],
+        #     anofabricacao=result_multimiss['ano_fab_conj'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     jaquetatamanho='',
+        #     jaquetacomplemento='',
+        #     calcatamanho='',
+        #     calcacomplemento='',
+        # )
+
+        # multi_capacete = CapaceteEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_multimiss['possui_cap_mult'],
+        #     estadodeconservacao=result_multimiss['estadodeconservacao_cap'],
+        #     condicao='P',
+        #     marca=result_multimiss['marca_cap'],
+        #     modelo=result_multimiss['modelo_cap'],
+        #     anofabricacao=result_multimiss['ano_fab_cap'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     cor=result_multimiss['cor_cap'],
+        # )
+
+        # multi_luva = LuvaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_multimiss['possui_luv_mult'],
+        #     estadodeconservacao=result_multimiss['estadodeconservacao_luv'],
+        #     condicao='P',
+        #     marca=result_multimiss['marca_luv'],
+        #     modelo=result_multimiss['modelo_luv'],
+        #     anofabricacao=result_multimiss['ano_fab_luv'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     circunferenciamao=result_multimiss['circunferenciamao_luv'],
+        # )
+
+        # multi_bota = BotaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_multimiss['possui_bot_mult'],
+        #     estadodeconservacao=result_multimiss['estadodeconservacao_bot'],
+        #     condicao='P',
+        #     marca=result_multimiss['marca_bot'],
+        #     modelo=result_multimiss['modelo_bot'],
+        #     anofabricacao=result_multimiss['ano_fab_bot'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     tamanho=result_multimiss['tamanho_bot'],
+        # )
+
+        # # Criar EPIs Salvamento
+        # salv_capacete_aqu = CapaceteAquaticoEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_salvamento['possui_cap_aqu'],
+        #     estadodeconservacao=result_salvamento['estadodeconservacao_cap_aqu'],
+        #     condicao='P',
+        #     marca=result_salvamento['marca_cap_aqu'],
+        #     modelo=result_salvamento['modelo_cap_aqu'],
+        #     anofabricacao=result_salvamento['ano_fab_cap_aqu'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     cor=result_salvamento['cor_cap_aqu'],
+        # )
+
+        # salv_capacete_alt = CapaceteVeicularEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_salvamento['possui_cap_alt'],
+        #     estadodeconservacao=result_salvamento['estadodeconservacao_cap_alt'],
+        #     condicao='P',
+        #     marca=result_salvamento['marca_cap_alt'],
+        #     modelo=result_salvamento['modelo_cap_alt'],
+        #     anofabricacao=result_salvamento['ano_fab_cap_alt'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     cor=result_salvamento['cor_cap_alt'],
+        # )
+
+        # salv_luva_veic = LuvaVeicularEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_salvamento['possui_luv_veic'],
+        #     estadodeconservacao=result_salvamento['estadodeconservacao_luv_veic'],
+        #     condicao='P',
+        #     marca=result_salvamento['marca_luv_veic'],
+        #     modelo=result_salvamento['modelo_luv_veic'],
+        #     anofabricacao=result_salvamento['ano_fab_luv_veic'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     circunferenciamao=result_salvamento['circunferenciamao_luv_veic'],
+        # )
+
+        # # Criar EPIs Motorresgate
+        # motresg_conjunto = ConjuntoEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_motorresgate['possui_conj_motoresg'],
+        #     estadodeconservacao=result_motorresgate['estadodeconservacao_conj_motoresg'],
+        #     condicao='P',
+        #     marca=result_motorresgate['marca_conj_motoresg'],
+        #     modelo=result_motorresgate['modelo_conj_motoresg'],
+        #     anofabricacao=result_motorresgate['ano_fab_conj_motoresg'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     jaquetatamanho='',
+        #     jaquetacomplemento='',
+        #     calcatamanho='',
+        #     calcacomplemento='',
+        # )
+
+        # motresg_capacete = CapaceteEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_motorresgate['possui_cap_motoresg'],
+        #     estadodeconservacao=result_motorresgate['estadodeconservacao_cap_motoresg'],
+        #     condicao='P',
+        #     marca=result_motorresgate['marca_cap_motoresg'],
+        #     modelo=result_motorresgate['modelo_cap_motoresg'],
+        #     anofabricacao=result_motorresgate['ano_fab_cap_motoresg'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     cor=result_motorresgate['cor_cap_motoresg'],
+        # )
+
+        # motresg_luva = LuvaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_motorresgate['possui_luv_motoresg'],
+        #     estadodeconservacao=result_motorresgate['estadodeconservacao_luv_motoresg'],
+        #     condicao='P',
+        #     marca=result_motorresgate['marca_luv_motoresg'],
+        #     modelo=result_motorresgate['modelo_luv_motoresg'],
+        #     anofabricacao=result_motorresgate['ano_fab_luv_motoresg'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     circunferenciamao=result_motorresgate['circunferenciamao_luv_motoresg'],
+        # )
+
+        # motresg_bota = BotaEPI.objects.create(
+        #     user=usuario,
+        #     possui=result_motorresgate['possui_bot_motoresg'],
+        #     estadodeconservacao=result_motorresgate['estadodeconservacao_bot_motoresg'],
+        #     condicao='P',
+        #     marca=result_motorresgate['marca_bot_motoresg'],
+        #     modelo=result_motorresgate['modelo_bot_motoresg'],
+        #     anofabricacao=result_motorresgate['ano_fab_bot_motoresg'],
+        #     plannumber='',
+        #     datapreenchimento='',
+        #     recebido=False,
+        #     datarecebimento='',
+        #     tamanho=result_motorresgate['tamanho_bot_motoresg'],
+        # )
+
+    return HttpResponse("Usuarios criados com sucesso!!")
+
+
+@login_required
+def listar_usuarios_view(request):
+    # Listar todos os usuários
+    usuarios = Users.objects.all()
+    return render(request, 'listar_usuarios.html', {'usuarios': usuarios})

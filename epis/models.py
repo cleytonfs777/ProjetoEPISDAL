@@ -11,10 +11,10 @@ class EPIBase(models.Model):
     ])
     marca = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
-    anofabricacao = models.IntegerField()
-    plannumber = models.IntegerField()
-    datapreenchimento = models.DateField()
-    recebido = models.BooleanField(default=False)
+    anofabricacao = models.IntegerField(null=True, blank=True)
+    plannumber = models.IntegerField(null=True, blank=True)
+    datapreenchimento = models.DateField(null=True, blank=True)
+    recebido = models.BooleanField(default=False, null=True, blank=True)
     datarecebimento = models.DateField(null=True, blank=True)
 
     class Meta:
