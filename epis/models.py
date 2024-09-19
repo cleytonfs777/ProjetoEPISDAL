@@ -12,7 +12,7 @@ class EPIBase(models.Model):
     marca = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
     anofabricacao = models.IntegerField(null=True, blank=True)
-    plannumber = models.IntegerField(null=True, blank=True)
+    plannumber = models.CharField(max_length=30, null=True, blank=True)
     datapreenchimento = models.DateField(null=True, blank=True)
     recebido = models.BooleanField(default=False, null=True, blank=True)
     datarecebimento = models.DateField(null=True, blank=True)
