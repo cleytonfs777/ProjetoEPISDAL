@@ -154,17 +154,17 @@
         </ul>
       </li><!-- End Forms Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#adm-inds" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#almox-inds" data-bs-toggle="collapse" href="#">
           <i class="bi bi-person-gear"></i><span>Almoxarifado</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="adm-inds" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="almox-inds" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li class="custom-li-side">
-            <a href="{% url "create_user_and_epis" %}">
+            <a href="#">
               <span>Registrar</span>
             </a>
           </li>
           <li  class="custom-li-side">
-            <a href="{% url "listar_usuarios" %}">
+            <a href="#">
               <span>Listar</span>
             </a>
           </li>
@@ -187,6 +187,7 @@
           </li>
         </ul>
       </li><!-- End Forms Nav -->
+      <li><a href="{% url 'popular_lista_usuarios' %}" class="btn btn-success">Popular lista</a></li>
 
     </ul>
 

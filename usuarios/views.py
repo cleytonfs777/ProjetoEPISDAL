@@ -558,24 +558,20 @@ def popular_lista_usuarios_view(request):
         result_salvamento = generate_salvamento_epi(classif_salvamento)
         result_motorresgate = generate_motorresgate_epi(classif_motorresgate)
 
-        # CRIANDO O USUARIO FICTICIO
-        # print("RESULT CONJUNTO CIURB")
-        # print(result_ciurb)
+        # Verifica se o usuario já existe
+        username = criar_username(usuario[3])
 
-        # print("RESULT CONJUNTO MULTIMISS")
-        # print(result_multimiss)
-
-        # print("RESULT CONJUNTO SALVAMENTO")
-        # print(result_salvamento)
-
-        # print("RESULT CONJUNTO MOTOR RESGATE")
-        # print(result_motorresgate)
+        if Users.objects.filter(username=username).exists():
+            print("Usuario já existe")
+            continue  # Pular a criação e retornar
 
         # Criar o usuário fictício com campos herdados de AbstractUser
         usuario = Users.objects.create(
             username=str(criar_username(usuario[3])),  # Definir o username
-            first_name=nomefull[0],  # Definir o primeiro nome
-            last_name=nomefull[1],  # Definir o sobrenome (opcional)
+            first_name=converter_propercase(
+                nomefull[0]),  # Definir o primeiro nome
+            # Definir o sobrenome (opcional)
+            last_name=converter_propercase(nomefull[1]),
             email=f"{criar_username(usuario[3])}@bombeiros.mg.gov.br",
             numbm=usuario[0],
             postgrad=converter_funtion(usuario[1]),
@@ -589,35 +585,9 @@ def popular_lista_usuarios_view(request):
             cob=cob_unip_unilot[0],
             unid_lot=cob_unip_unilot[1],
             unid_princ=cob_unip_unilot[2],
-            sexo=usuario[11],
+            sexo=usuario[11] if usuario[11] == 'M' or usuario[11] == 'F' else 'M',
             priorit='',
         )
-
-#         print(f"""
-#         # Criar o usuário fictício com campos herdados de AbstractUser
-#         usuario = Users.objects.create(
-#             username={str(criar_username(usuario[3]))},  # Definir o username
-#             first_name={nomefull[0]},  # Definir o primeiro nome
-#             last_name={nomefull[1]},  # Definir o sobrenome (opcional)
-#             email={f"{criar_username(usuario[3])}@bombeiros.mg.gov.br"},
-#             numbm={usuario[0]},
-#             postgrad={converter_funtion(usuario[1])},
-#             date_include={formatar_data_para_iso(usuario[4])},
-#             time_service_days={dias_desde_data(usuario[4])},
-#             status={atividade},
-#             sitfunc={situacao},
-#             gto='',
-#             ativ_esp='N',
-#             list_ativ_esp='',
-#             cob={cob_unip_unilot[0]},
-#             unid_lot={cob_unip_unilot[1]},
-#             unid_princ={cob_unip_unilot[2]},
-#             sexo={usuario[11]},
-#             priorit='',
-#         )
-# """)
-
-#         return HttpResponse("Usuario criado com sucesso!")
 
         # Definir a senha padrão 'cbmmg193' usando o método set_password
         # filipe.oliveira
@@ -632,11 +602,11 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_ciurb['marca_conj'],
             modelo=result_ciurb['modelo_conj'],
-            anofabricacao=result_ciurb['ano_fab_conj'],
+            anofabricacao=obter_valor(result_ciurb, 'ano_fab_conj', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             jaquetatamanho=result_ciurb['jaquetatamanho'],
             jaquetacomplemento=result_ciurb['jaquetacomplemento'],
             calcatamanho=result_ciurb['calcatamanho'],
@@ -650,11 +620,11 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_ciurb['marca_cap'],
             modelo=result_ciurb['modelo_cap'],
-            anofabricacao=result_ciurb['ano_fab_cap'],
+            anofabricacao=obter_valor(result_ciurb, 'ano_fab_cap', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             cor=result_ciurb['cor_cap'],
         )
 
@@ -665,11 +635,11 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_ciurb['marca_luv'],
             modelo=result_ciurb['modelo_luv'],
-            anofabricacao=result_ciurb['ano_fab_luv'],
+            anofabricacao=obter_valor(result_ciurb, 'ano_fab_luv', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             circunferenciamao=result_ciurb['circunferenciamao'],
         )
 
@@ -680,11 +650,11 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_ciurb['marca_bal_ciurb'],
             modelo=result_ciurb['modelo_bal_ciurb'],
-            anofabricacao=result_ciurb['ano_fab_bal_ciurb'],
+            anofabricacao=obter_valor(result_ciurb, 'ano_fab_bal_ciurb', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             camadas=result_ciurb['camadas_bal_ciurb'],
         )
 
@@ -695,12 +665,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_ciurb['marca_bot_ciurb'],
             modelo=result_ciurb['modelo_bot_ciurb'],
-            anofabricacao=result_ciurb['ano_fab_bot_ciurb'],
+            anofabricacao=obter_valor(result_ciurb, 'ano_fab_bot_ciurb', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
-            tamanho=result_ciurb['numero_bot_cirurb'],
+            datarecebimento=date.today(),
+            tamanho=obter_valor(result_ciurb, 'numero_bot_cirurb', 39),
         )
 
         # Criar EPIs Multimissão
@@ -711,15 +681,15 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_multimiss['marca_conj'],
             modelo=result_multimiss['modelo_conj'],
-            anofabricacao=result_multimiss['ano_fab_conj'],
+            anofabricacao=0,
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             jaquetatamanho='',
-            jaquetacomplemento='',
+            jaquetacomplemento=0,
             calcatamanho='',
-            calcacomplemento='',
+            calcacomplemento=0,
         )
 
         multi_capacete = CapaceteEPI.objects.create(
@@ -729,11 +699,11 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_multimiss['marca_cap'],
             modelo=result_multimiss['modelo_cap'],
-            anofabricacao=result_multimiss['ano_fab_cap'],
+            anofabricacao=0,
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             cor=result_multimiss['cor_cap'],
         )
 
@@ -744,11 +714,11 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_multimiss['marca_luv'],
             modelo=result_multimiss['modelo_luv'],
-            anofabricacao=result_multimiss['ano_fab_luv'],
+            anofabricacao=0,
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             circunferenciamao=result_multimiss['circunferenciamao_luv'],
         )
 
@@ -759,12 +729,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_multimiss['marca_bot'],
             modelo=result_multimiss['modelo_bot'],
-            anofabricacao=result_multimiss['ano_fab_bot'],
+            anofabricacao=0,
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
-            tamanho=result_multimiss['tamanho_bot'],
+            datarecebimento=date.today(),
+            tamanho=obter_valor(result_multimiss, 'tamanho_bot', 39),
         )
 
         # Criar EPIs Salvamento
@@ -775,11 +745,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_salvamento['marca_cap_aqu'],
             modelo=result_salvamento['modelo_cap_aqu'],
-            anofabricacao=result_salvamento['ano_fab_cap_aqu'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_cap_aqu', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             cor=result_salvamento['cor_cap_aqu'],
         )
 
@@ -790,11 +761,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_salvamento['marca_cap_alt'],
             modelo=result_salvamento['modelo_cap_alt'],
-            anofabricacao=result_salvamento['ano_fab_cap_alt'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_cap_alt', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             cor=result_salvamento['cor_cap_alt'],
         )
 
@@ -805,11 +777,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_salvamento['marca_luv_veic'],
             modelo=result_salvamento['modelo_luv_veic'],
-            anofabricacao=result_salvamento['ano_fab_luv_veic'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_luv_veic', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             circunferenciamao=result_salvamento['circunferenciamao_luv_veic'],
         )
 
@@ -821,15 +794,16 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_motorresgate['marca_conj_motoresg'],
             modelo=result_motorresgate['modelo_conj_motoresg'],
-            anofabricacao=result_motorresgate['ano_fab_conj_motoresg'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_conj_motoresg', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             jaquetatamanho='',
-            jaquetacomplemento='',
+            jaquetacomplemento=0,
             calcatamanho='',
-            calcacomplemento='',
+            calcacomplemento=0,
         )
 
         motresg_capacete = CapaceteEPI.objects.create(
@@ -839,11 +813,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_motorresgate['marca_cap_motoresg'],
             modelo=result_motorresgate['modelo_cap_motoresg'],
-            anofabricacao=result_motorresgate['ano_fab_cap_motoresg'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_cap_motoresg', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             cor=result_motorresgate['cor_cap_motoresg'],
         )
 
@@ -854,11 +829,12 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_motorresgate['marca_luv_motoresg'],
             modelo=result_motorresgate['modelo_luv_motoresg'],
-            anofabricacao=result_motorresgate['ano_fab_luv_motoresg'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_luv_motoresg', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
+            datarecebimento=date.today(),
             circunferenciamao=result_motorresgate['circunferenciamao_luv_motoresg'],
         )
 
@@ -869,12 +845,14 @@ def popular_lista_usuarios_view(request):
             condicao='P',
             marca=result_motorresgate['marca_bot_motoresg'],
             modelo=result_motorresgate['modelo_bot_motoresg'],
-            anofabricacao=result_motorresgate['ano_fab_bot_motoresg'],
+            anofabricacao=obter_valor(
+                result_salvamento, 'ano_fab_bot_motoresg', 0),
             plannumber='',
-            datapreenchimento='',
+            datapreenchimento=date.today(),
             recebido=False,
-            datarecebimento='',
-            tamanho=result_motorresgate['tamanho_bot_motoresg'],
+            datarecebimento=date.today(),
+            tamanho=obter_valor(
+                result_motorresgate, 'tamanho_bot_motoresg', 0),
         )
 
     return HttpResponse("Usuarios criados com sucesso!!")

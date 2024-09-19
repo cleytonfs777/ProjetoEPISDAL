@@ -15,7 +15,7 @@ def ler_arquivo_xlsx():
     lista_linhas = [linha for linha in df.values.tolist() if not (
         isinstance(linha[0], float) and math.isnan(linha[0]))]
 
-    dados = lista_linhas[1:3]
+    dados = lista_linhas[1:10]
 
     # Imprimir as listas
     for i, linha in enumerate(dados):

@@ -1,5 +1,6 @@
 
 from datetime import datetime
+import math
 import re
 
 TABLE_LUV = [('5 - XXS', '12 a 15 cm'), ('6 - XS', '18 a 19 cm'), ('7 - S', '19 a 20 cm'), ('8 - M', '20 a 21,5 cm'),
@@ -7,12 +8,16 @@ TABLE_LUV = [('5 - XXS', '12 a 15 cm'), ('6 - XS', '18 a 19 cm'), ('7 - S', '19 
 
 
 def proper_case_last_word(s):
-    # Realiza o split da string
-    words = s.split(" ")
-    # Pega a última palavra
-    last_word = words[-1]
-    # Aplica o método title() para deixar apenas a primeira letra maiúscula
-    return last_word.title()
+    try:
+        # Realiza o split da string
+        words = s.split(" ")
+        # Pega a última palavra
+        last_word = words[-1]
+        # Aplica o método title() para deixar apenas a primeira letra maiúscula
+        return last_word.title()
+    except Exception as e:
+        print(e)
+        return 'Simples'
 
 
 def extrair_medida(input_str):
@@ -20,17 +25,27 @@ def extrair_medida(input_str):
     padrao = r'\d+ a \d+cm'
 
     # Busca pelo padrão na string
-    resultado = re.search(padrao, input_str)
-
-    print("dados extraidos de luvs: ", resultado)
+    try:
+        resultado = re.search(padrao, input_str)
+        print("dados extraidos de luvs: ", resultado)
+        return resultado.group(0) if resultado else ''
+    except Exception as e:
+        resultado = '12 a 15 cm'
+        print("dados extraidos de luvs: ", resultado)
+        return resultado
 
     # Retorna o resultado se encontrado, senão retorna None
-    return resultado.group(0) if resultado else ''
 
 
 def separar_lista(input_str):
     # Divide a string com base no separador " - " e remove espaços em branco com strip()
-    valores = [valor.strip() for valor in input_str.split(' - ')]
+    print(f"Recebido por separar lista: {input_str}")
+    try:
+        valores = [valor.strip() for valor in input_str.split(' - ')]
+        valores[1] = int(valores[1]) if valores[1].isdigit() else 0
+    except Exception as e:
+        valores = ["", 0]
+    print(f"Valores separados: {valores}")
     return valores
 
 
@@ -89,10 +104,14 @@ def dias_desde_data(data_str):
     data_atual = datetime.now()
 
     # Calcular a diferença em dias
-    diferenca = data_atual - data_fornecida
+    try:
+        diferenca = data_atual - data_fornecida
 
-    # Retornar a quantidade de dias
-    return diferenca.days
+        # Retornar a quantidade de dias
+        return diferenca.days
+    except Exception as e:
+        print(e)
+        return 0
 
 
 def situacao_func(sit):
@@ -170,7 +189,10 @@ def situacao_func(sit):
                  )
     select_sit = [tg_sit[0] for tg_sit in situacoes if tg_sit[1] == str(sit)]
     print(f"Situação Selecionada: {select_sit}")
-    dado_tratado = int(select_sit[0])
+    try:
+        dado_tratado = int(select_sit[0])
+    except:
+        dado_tratado = 2
     print(f"Tipo de dado: {type(dado_tratado)}")
     return dado_tratado
 
@@ -194,7 +216,7 @@ def generate_ciurb_epi(dados):
     possui_conj_ciurb = False if dados[0] == 'NÃO POSSUI' or dados[0] == '' else True
     marca_conj = dados[0] if possui_conj_ciurb else ''
     modelo_conj = dados[0] if possui_conj_ciurb else ''
-    ano_fab_conj = dados[1] if possui_conj_ciurb else ''
+    ano_fab_conj = dados[1] if possui_conj_ciurb else 0
     estadodeconservacao_conj = dados[2] if possui_conj_ciurb else ''
 
     # SEPARAÇÃO DE JAQUETA E CALÇA
@@ -203,23 +225,23 @@ def generate_ciurb_epi(dados):
 
     # AJUSTES DE KITS
     jaquetatamanho = kit_jaqueta[0] if kit_jaqueta[0] != '' else ''
-    jaquetacomplemento = kit_jaqueta[1] if kit_jaqueta[1] != '' else ''
+    jaquetacomplemento = kit_jaqueta[1] if kit_jaqueta[1] != '' else 0
     calcatamanho = kit_calca[0] if kit_calca[0] != '' else ''
-    calcacomplemento = kit_calca[1] if kit_calca[1] != '' else ''
+    calcacomplemento = kit_calca[1] if kit_calca[1] != '' else 0
 
     # CAPACETES DE COMBATE A INCENDIO ********************************************
     possui_cap_ciurb = False if dados[5] == 'NÃO POSSUI' or dados[5] == '' else True
     marca_cap = dados[5] if possui_cap_ciurb else ''
     modelo_cap = dados[5] if possui_cap_ciurb else ''
     cor_cap = dados[6] if possui_cap_ciurb else ''
-    ano_fab_cap = dados[7] if possui_cap_ciurb else ''
+    ano_fab_cap = dados[7] if possui_cap_ciurb else 0
     estadodeconservacao_cap = dados[8] if possui_cap_ciurb else ''
 
     # LUVAS DE COMBATE A INCENDIO ********************************************
     possui_luv_ciurb = False if dados[9] == 'NÃO POSSUI' or dados[9] == '' else True
     marca_luv = dados[9] if possui_luv_ciurb else ''
     modelo_luv = dados[9] if possui_luv_ciurb else ''
-    ano_fab_luv = dados[10] if possui_luv_ciurb else ''
+    ano_fab_luv = dados[10] if possui_luv_ciurb else 0
     estadodeconservacao_luv = dados[11] if possui_luv_ciurb else ''
     medida_luv = extrair_medida(dados[12])
     circunferenciamao = medida_luv if medida_luv else ''
@@ -239,9 +261,9 @@ def generate_ciurb_epi(dados):
     possui_bot_ciurb = False if dados[16] == 'NÃO POSSUI' or dados[16] == '' else True
     marca_bot_ciurb = dados[16] if possui_bot_ciurb else ''
     modelo_bot_ciurb = dados[16] if possui_bot_ciurb else ''
-    ano_fab_bot_ciurb = dados[17] if dados[17] else ''
+    ano_fab_bot_ciurb = dados[17] if dados[17] else 0
     estadodeconservacao_bot_ciurb = dados[18] if dados[18] else ''
-    numero_bot_cirurb = dados[19] if dados[19] else ''
+    numero_bot_cirurb = dados[19] if dados[19] else 0
 
     return {
         'possui_conj_ciurb': possui_conj_ciurb,
@@ -286,7 +308,7 @@ def generate_multimiss_epi(dados):
     possui_conj_mult = False if dados[0] == 'NÃO POSSUI' or dados[0] == '' else True
     marca_conj = dados[0] if possui_conj_mult else ''
     modelo_conj = dados[0] if possui_conj_mult else ''
-    ano_fab_conj = dados[1] if possui_conj_mult else ''
+    ano_fab_conj = dados[1] if possui_conj_mult else 0
     estadodeconservacao_conj = dados[2] if possui_conj_mult else ''
 
     # CAPACETE DE MULTIMISSÃO ********************************************
@@ -299,7 +321,7 @@ def generate_multimiss_epi(dados):
     # cor_cap = dados[4] if possui_cap_mult else ''
     cor_cap = ''
     # ano_fab_cap = dados[5] if possui_cap_mult else ''
-    ano_fab_cap = ''
+    ano_fab_cap = 0
     # estadodeconservacao_cap = dados[6] if possui_cap_mult else ''
     estadodeconservacao_cap = ''
 
@@ -311,7 +333,7 @@ def generate_multimiss_epi(dados):
     # modelo_luv = dados[8] if possui_luv_mult else ''
     modelo_luv = ''
     # ano_fab_luv = dados[9] if possui_luv_mult else ''
-    ano_fab_luv = ''
+    ano_fab_luv = 0
     # estadodeconservacao_luv = dados[10] if possui_luv_mult else ''
     estadodeconservacao_luv = ''
     # circunferenciamao_luv = dados[9] if possui_luv_mult else ''
@@ -322,7 +344,7 @@ def generate_multimiss_epi(dados):
     possui_bot_mult = False if dados[4] == 'NÃO POSSUI' or dados[4] == '' else True
     marca_bot = dados[4] if possui_bot_mult else ''
     modelo_bot = dados[4] if possui_bot_mult else ''
-    ano_fab_bot = dados[5] if possui_bot_mult else ''
+    ano_fab_bot = dados[5] if possui_bot_mult else 0
     estadodeconservacao_bot = dados[6] if possui_bot_mult else ''
     tamanho_bot = dados[7] if possui_bot_mult else ''
 
@@ -369,7 +391,7 @@ def generate_salvamento_epi(dados):
     # cor_cap_aqu = dados[1] if possui_cap_aqu else ''
     cor_cap_aqu = ''
     # ano_fab_cap_aqu = dados[2] if possui_cap_aqu else ''
-    ano_fab_cap_aqu = ''
+    ano_fab_cap_aqu = 0
     # estadodeconservacao_cap_aqu = dados[3] if possui_cap_aqu else ''
     estadodeconservacao_cap_aqu = ''
 
@@ -378,14 +400,14 @@ def generate_salvamento_epi(dados):
     marca_cap_alt = dados[0] if possui_cap_alt else ''
     modelo_cap_alt = dados[0] if possui_cap_alt else ''
     cor_cap_alt = dados[1] if possui_cap_alt else ''
-    ano_fab_cap_alt = dados[2] if possui_cap_alt else ''
+    ano_fab_cap_alt = dados[2] if possui_cap_alt else 0
     estadodeconservacao_cap_alt = dados[3] if possui_cap_alt else ''
 
     # LUVA SALVAMENTO VEICULAR
     possui_luv_veic = False if dados[4] == 'NÃO POSSUI' or dados[4] == '' else True
     marca_luv_veic = dados[4] if possui_luv_veic else ''
     modelo_luv_veic = dados[4] if possui_luv_veic else ''
-    ano_fab_luv_veic = dados[5] if possui_luv_veic else ''
+    ano_fab_luv_veic = dados[5] if possui_luv_veic else 0
     estadodeconservacao_luv_veic = dados[6] if possui_luv_veic else ''
     medida_luv_veic = extrair_medida(dados[7])
     circunferenciamao_luv_veic = medida_luv_veic if possui_luv_veic else ''
@@ -445,7 +467,7 @@ def generate_motorresgate_epi(dados):
     # modelo_conj_motoresg = dados[0] if possui_conj_motoresg else ''
     modelo_conj_motoresg = ''
     # ano_fab_conj_motoresg = dados[0] if possui_conj_motoresg else ''
-    ano_fab_conj_motoresg = ''
+    ano_fab_conj_motoresg = 0
     # estadodeconservacao_conj_motoresg = dados[0] if possui_conj_motoresg else ''
     estadodeconservacao_conj_motoresg = ''
 
@@ -457,7 +479,7 @@ def generate_motorresgate_epi(dados):
     # modelo_cap_motoresg = dados[0] if possui_cap_motoresg else ''
     modelo_cap_motoresg = ''
     # ano_fab_cap_motoresg = dados[0] if possui_cap_motoresg else ''
-    ano_fab_cap_motoresg = ''
+    ano_fab_cap_motoresg = 0
     # cor_cap_motoresg = dados[0] if possui_cap_motoresg else ''
     cor_cap_motoresg = 'branco'
     # estadodeconservacao_cap_motoresg = dados[0] if possui_cap_motoresg else ''
@@ -471,7 +493,7 @@ def generate_motorresgate_epi(dados):
     # modelo_luv_motoresg = dados[0] if possui_luv_motoresg else ''
     modelo_luv_motoresg = ''
     # ano_fab_luv_motoresg = dados[0] if possui_luv_motoresg else ''
-    ano_fab_luv_motoresg = ''
+    ano_fab_luv_motoresg = 0
     # estadodeconservacao_luv_motoresg = dados[0] if possui_luv_motoresg else ''
     estadodeconservacao_luv_motoresg = ''
     # circunferenciamao_luv_motoresg = dados[0] if possui_luv_motoresg else ''
@@ -486,7 +508,7 @@ def generate_motorresgate_epi(dados):
     # modelo_bot_motoresg = dados[0] if possui_bot_motoresg else ''
     modelo_bot_motoresg = ''
     # ano_fab_bot_motoresg = dados[0] if possui_bot_motoresg else ''
-    ano_fab_bot_motoresg = ''
+    ano_fab_bot_motoresg = 0
     # estadodeconservacao_bot_motoresg = dados[0] if possui_bot_motoresg else ''
     estadodeconservacao_bot_motoresg = ''
     # Tamanho da Bota
@@ -522,6 +544,44 @@ def generate_motorresgate_epi(dados):
         'tamanho_bot_motoresg': tamanho_bot_motoresg
 
     }
+
+
+def converter_propercase(texto):
+    # Lista de exceções que devem ser mantidas em minúsculas
+    excecoes = ['da', 'das', 'de', 'do', 'dos']
+
+    # Separar a string em palavras
+    palavras = texto.split()
+
+    # Converter cada palavra
+    palavras_convertidas = [
+        palavra.lower() if palavra.lower() in excecoes else palavra.capitalize()
+        for palavra in palavras
+    ]
+
+    # Reunir as palavras em uma única string novamente
+    return ' '.join(palavras_convertidas)
+
+# Função auxiliar para retornar valor padrão se None, vazio ou não existente
+
+
+def obter_valor(dicionario, chave, valor_padrao=None):
+    valor = dicionario.get(chave, valor_padrao)
+
+    # Verifica se o valor é None, vazio ou NaN
+    if valor in [None, ''] or (isinstance(valor, float) and math.isnan(valor)):
+        return valor_padrao
+
+    # Converte o valor para int ou float se for um número
+    if isinstance(valor, str):
+        try:
+            valor = int(valor)
+        except ValueError:
+            try:
+                valor = float(valor)
+            except ValueError:
+                valor = 0
+    return valor
 
 
 if __name__ == '__main__':
