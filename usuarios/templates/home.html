@@ -51,7 +51,7 @@
                 class="form-control"
                 id="numbm"
                 name="numbm"
-                maxlength="10"
+                maxlength="9"
                 value="{{ user.numbm }}"
                 placeholder="Digite apenas os números"
                             style="font-size: 0.8em;"
@@ -109,7 +109,7 @@
                 id="tempserv"
                 name="tempserv"
                             style="font-size: 0.8em;"
-                value="{{ user.time_service_days }}"
+                value="{{ user.time_service_days|dias_para_anos}}"
                 required
                 readonly
             />

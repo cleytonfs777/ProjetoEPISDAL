@@ -15,3 +15,10 @@ def list_gtos(list):
     print(list)
     print(type(list))
     return list
+
+
+@register.filter(name="dias_para_anos")
+def dias_para_anos(dias):
+    # Considera-se que um ano tem 365 dias
+    anos = dias // 365
+    return f"{anos} anos"

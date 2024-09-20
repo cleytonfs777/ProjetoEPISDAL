@@ -14,7 +14,7 @@
     }
     .table-dot tbody {
       display: block; /* Permite que o tbody seja rolável */
-      max-height: 25em; /* Define a altura máxima */
+      max-height: 45em; /* Define a altura máxima */
       overflow-y: auto; /* Permite a rolagem vertical quando necessário */
     }
   
@@ -34,6 +34,92 @@
   
     .modal-custom {
       max-width: 50%; /* Ou o valor que você quiser */
+    }
+    /* Estilização para o botão principal */
+    .button-main {
+        color: orange;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    /* Estilização para o campo de tags */
+    .tags-input {
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 10px;
+        background-color: #f9f9f9; /* Um fundo leve para destaque */
+    }
+    
+    .tags-input .tag {
+        background-color: #add8e6;
+        color: #000000;
+        border-radius: 3px;
+        padding: 5px;
+        margin: 2px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .tags-input .tag .remove-tag {
+        margin-left: 5px;
+        cursor: pointer;
+    }
+    
+    .tags-input input {
+        border: none;
+        outline: none;
+        flex: 1;
+    }
+
+    /* Ajustes adicionais para o modal */
+    .modal-custom .form-select, .modal-custom .form-control {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+
+    .modal-custom .modal-header {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .modal-custom .modal-footer {
+        justify-content: space-between;
+    }
+
+    .modal-custom .modal-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .modal-custom .btn-close {
+        background-color: white;
+        color: black;
+    }
+
+    .form-label {
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .input-group .form-control {
+        flex: 1;
+    }
+
+    .form-check-label {
+        font-size: 0.9rem;
+    }
+
+    /* Estilização do botão "Adicionar Atividade Especializada" */
+    .btn-success {
+        font-size: 0.9rem;
     }
 {% endblock %}
 {% block max-title %}MEUS DADOS{% endblock%}
@@ -80,21 +166,65 @@
                             <td class="rot-info rot-sm d-flex justify-content-center">{{usuario.priorit}}</td>
                             <td>
                               <!-- Botão para apagar um registro-->
-                              <button 
-                              type="button" 
+                              <a 
+                              href="#" 
                               class="btn btn-danger btn-sm" 
+                              onclick="return confirm('Realmente deseja excluir o militar: {{usuario.first_name}} {{usuario.last_name}}?')"
+
                               >
-                              <i class="ri-delete-bin-6-line"></i></button>                   
+                              <i class="ri-delete-bin-6-line"></i></a>                   
                               <!-- Botão para editar um registro-->
-                              <button 
-                              type="button" 
-                              class="btn btn-primary btn-sm"> 
-                              <i class="ri-edit-box-line"></i></button>    
+                              <a 
+                              href="#" 
+                              class="btn btn-primary btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editMilitar"
+                              data-firstname="{{usuario.first_name}}"
+                              data-lastname="{{usuario.last_name}}"
+                              data-emailfunc="{{usuario.emailfunc}}"
+                              data-cargo="{{usuario.cargo}}"
+                              data-numbm="{{usuario.numbm}}"
+                              data-postgrad="{{usuario.postgrad}}"
+                              data-dateinclude="{{usuario.date_include}}"
+                              data-timeservicedays="{{usuario.time_service_days}}"
+                              data-status="{{usuario.status}}"
+                              data-sitfunc="{{usuario.sitfunc}}"
+                              data-gto="{{usuario.gto}}"
+                              data-ativesp="{{usuario.ativ_esp}}"
+                              data-listativesp="{{usuario.list_ativ_esp}}"
+                              data-cob="{{usuario.cob}}"
+                              data-unidlot="{{usuario.unid_lot}}"
+                              data-unidprinc="{{usuario.unid_princ}}"
+                              data-sexo="{{usuario.sexo}}"
+                              data-priori="{{usuario.priori}}"
+                              >
+                              <i class="ri-edit-box-line"></i></a>    
                               <!-- Botão para visualizar um registro -->
-                              <button 
-                              type="button" 
-                              class="btn btn-success btn-sm"> 
-                              <i class="bi bi-eye"></i></button>
+                              <a 
+                              href="#" 
+                              class="btn btn-success btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editMilitar"
+                              data-cargo="{{usuario.cargo}}"
+                              data-numbm="{{usuario.numbm}}"
+                              data-firstname="{{usuario.first_name}}"
+                              data-lastname="{{usuario.last_name}}"
+                              data-emailfunc="{{usuario.emailfunc}}"
+                              data-postgrad="{{usuario.postgrad}}"
+                              data-dateinclude="{{usuario.date_include}}"
+                              data-timeservicedays="{{usuario.time_service_days}}"
+                              data-status="{{usuario.status}}"
+                              data-sitfunc="{{usuario.sitfunc}}"
+                              data-gto="{{usuario.gto}}"
+                              data-ativesp="{{usuario.ativ_esp}}"
+                              data-listativesp="{{usuario.list_ativ_esp}}"
+                              data-cob="{{usuario.cob}}"
+                              data-unidlot="{{usuario.unid_lot}}"
+                              data-unidprinc="{{usuario.unid_princ}}"
+                              data-sexo="{{usuario.sexo}}"
+                              data-priori="{{usuario.priori}}"
+                              >
+                              <i class="bi bi-eye"></i></a>
                             </td>             
                         </tr>
                         {% endfor %}
@@ -112,4 +242,626 @@
   
     </div>
   </div>
+<!-- Modal Edit Militar -->
+<div class="modal fade" id="editMilitar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-scrollable modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="modaltitlemilitar" class="modal-title fw-bold">Editar Militar </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditEquip" data-action="#" method="POST">
+          {% csrf_token %}
+          <div class="container">
+            <div class="row align-items-top m-3">
+              <div class="col-xxl-12 col-md-12">
+                <div class="line-container">
+                  <div class="line"></div>
+                  <span class="span-line">Dados Básicos</span>
+                  <div class="line"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="modalpostgrad" class="form-label text-primary"
+                  >Posto/Grad</label
+                >
+                <select
+                class="form-select changeble-item"
+                aria-label="Default"
+                id="modalpostgrad"
+                name="modalpostgrad"
+                required
+              >
+                <option selected disabled>Selecione P/G</option>
+                <option value="sd2cl">Sd 2ª Classe BM</option>
+                <option value="sd">Sd BM</option>
+                <option value="cb">Cb BM</option>
+                <option value="3sgt">3º Sgt BM</option>
+                <option value="2sgt">2º Sgt BM</option>
+                <option value="1sgt">1º Sgt BM</option>
+                <option value="subten">Sub Ten BM</option>
+                <option value="2ten">2º Ten BM</option>
+                <option value="1ten">1º Ten BM</option>
+                <option value="cap">Cap BM</option>
+                <option value="maj">Maj BM</option>
+                <option value="tencel">Ten Cel BM</option>
+                <option value="cel">Cel BM</option>
+              </select>
+              </div>
+              <div class="col-md-6">
+                <label for="modalnumbm" class="form-label text-primary"
+                  >Nº BM</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modalnumbm"
+                  name="modalnumbm"
+                                  maxlength="9"
+                />
+              </div>
+            </div>
+            <div class="row py-2">
+
+              <div class="col-md-6">
+                <label for="modalnomecomp" class="form-label text-primary"
+                  >Nome</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modalnomecomp"
+                  name="modalnomecomp"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="modalEmail" class="form-label text-primary"
+                  >E-mail</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="modalEmail"
+                  name="modalEmail"
+                />
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="modalpostgrad" class="form-label text-primary"
+                  >Cargo</label
+                >
+                <select
+                class="form-select changeble-item"
+                aria-label="Default"
+                id="modalpostgrad"
+                name="modalpostgrad"
+              >
+                <option selected disabled>Selecione o cargo</option>
+                <option value="A">Administrador</option>
+                <option value="M">Militar</option>
+              </select>
+              </div>
+              <div class="col-md-6">
+                <label for="modalpostgrad" class="form-label text-primary"
+                  >Sit. Funcional</label
+                >
+                <select
+                class="form-select changeble-item"
+                aria-label="Default"
+                id="modalpostgrad"
+                name="modalpostgrad"
+                required
+              >
+                <option selected disabled>Selecione Sit Func</option>
+                <option value="1">ATIVIDADE MEIO</option>
+                <option value="2">ATIVID.FIM NA SEDE</option>
+                <option value="3">ATIVID.FIM DESTACADO</option>
+                <option value="4">MATRICULADO EM CURSO</option>
+                <option value="5">RESERVA NAO REMUNERA</option>
+                <option value="6">RES. TEMPO SERVICO</option>
+                <option value="7">RES.TEMPO EFET. SERV</option>
+                <option value="8">RES.LIMITE IDADE</option>
+                <option value="9">RESERVA CARGO ELETIV</option>
+                <option value="10">RESERVA CARGO PUBLIC</option>
+                <option value="11">REFORMA LIMITE IDADE</option>
+                <option value="12">REFORMA INCAP.FISICA</option>
+                <option value="13">REFORMA DISCIPLINAR</option>
+                <option value="14">EXCLUIDO</option>
+                <option value="15">QOR DESIGNADO</option>
+                <option value="16">LIC.TRAT.PROP.SAUDE</option>
+                <option value="17">LIC.TRAT.PES.FAMILIA</option>
+                <option value="18">LIC.INTERESSE PARTIC</option>
+                <option value="19">AGREG.FIL.PART.POLIT</option>
+                <option value="20">AGREG.EXCEDER QUADRO</option>
+                <option value="21">DESERTOR</option>
+                <option value="22">AGREG. DISP.ORG.PUBL</option>
+                <option value="23">AGREG. EXTRAVIO</option>
+                <option value="24">AFAST.AG.TRANSF.INAT</option>
+                <option value="25">AG.CARGO PUB.S/VENC.</option>
+                <option value="26">AGREG.SUSP.EX.FUNCAO</option>
+                <option value="27">AGREG.CUMP SENT PENA</option>
+                <option value="28">AG. ELEICAO ANTES 98</option>
+                <option value="29">CONDENADO PREST.SERV</option>
+                <option value="30">PRESO A DISP JUSTICA</option>
+                <option value="31">SUBMETIDO A CJ</option>
+                <option value="32">APOSENTADO</option>
+                <option value="33">JUIZ / TJM</option>
+                <option value="34">F.C.DISP.FUN.PUBLICA</option>
+                <option value="35">INAT VENC OUT ORGAOS</option>
+                <option value="36">FERIAS</option>
+                <option value="37">FC AG. APOSENTADORIA</option>
+                <option value="38">LICENCA A GESTANTE</option>
+                <option value="39">PERDA DO POSTO/GRAD</option>
+                <option value="40">REF.VOLUNT. QOR/QPR</option>
+                <option value="41">REF.LIM.IDAD.QOR/QPR</option>
+                <option value="42">INAT PRESO/JUSTICA</option>
+                <option value="43">F.C.DISP.OUTRO ORGAO</option>
+                <option value="44">REFORMA P/ INVALIDEZ</option>
+                <option value="45">QPR DESIGNADO</option>
+                <option value="46">AG LIC.SAU.SUP 1 ANO</option>
+                <option value="47">QUADRO ESPECIALISTA</option>
+                <option value="48">CONDENADO/SEM SERVI</option>
+                <option value="49">PRESO JUST/SEM SERV</option>
+                <option value="50">INATIVA</option>
+                <option value="51">ART.12/EC 39/1999</option>
+                <option value="52">DISP CAUTELAR</option>
+                <option value="53">AG.CARGO PUB.C/VENC.</option>
+                <option value="54">PRACA ADIDO.AG.REF</option>
+                <option value="55">OFICIAL ADIDO AG REF</option>
+                <option value="56">PARCIALMENTE CAPAZ</option>
+                <option value="57">INTERD.JUDIC.-ATIVO</option>
+                <option value="58">AGR.ELEICAO POS 1998</option>
+                <option value="59">AGREGA ENTID. CLASSE</option>
+                <option value="60">MAT CURSO FORA CBMMG</option>
+                <option value="61">OFICIAL AG. 393 CPPM</option>
+                <option value="62">AG.ART.134/L.5301/69</option>
+                <option value="63">LIC.MED. NAO HOMOLOG</option>
+                <option value="64">AFASTADO JUDIC CBMMG</option>
+                <option value="65">REFORMA INTERDIÃO</option>
+                <option value="66">EX BM C/PROVENTO JUD</option>
+                <option value="67">PESSOAL DA SAUDE</option>
+                <option value="68">AGRG. DEC. JUDICIAL</option>
+                <option value="69">FUNCIONARIO CIVIL</option>
+                <option value="70">FORÇA NACIONAL</option>
+              </select>
+              </div>
+
+            </div>
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="temposerv" class="form-label text-primary"
+                  >Tempo de Serviço</label
+                >
+                <input
+                type="text"
+                class="form-control"
+                id="temposerv"
+                name="temposerv"
+
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="modalnumbm" class="form-label text-primary"
+                  >Data Inclusão</label
+                >
+                <input
+                type="date"
+                class="form-control"
+                id="firstinc"
+                name="firstinc"
+
+                />
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-6">
+                <!-- Input que receberá os GTOS -->
+                <input type="hidden" id="gtos_own" name="gtos_own" value="{{ user.gto }}" style="font-size: 0.8em;">
+                <label for="compgto" class="form-label text-success">GTO</label>
+                <select class="form-select" aria-label="Default" id="compgto" name="compgto" style="font-size: 0.8em;">
+                    <option value="">Selecione um GTO</option>
+                    {% for gto in gtos %}
+                    <option value="{{ gto }}">{{ gto }}</option>
+                    {% endfor %}
+                </select>
+                <div class="tags-input" id="tags-input-gto"></div>
+              </div>            
+              <div class="col-md-6">
+                <!-- Checkbox para indicar se exerce atividade especializada -->
+                <div class="form-check mb-2">
+                    {% if user.ativ_esp == 'S' %}
+                    <input class="form-check-input" type="checkbox" id="atividadeEspecializadaCheckbox" checked>
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" id="atividadeEspecializadaCheckbox">
+                    {% endif %}
+                    <label class="form-check-label" for="atividadeEspecializadaCheckbox">
+                        Exerce atividade especializada?
+                    </label>
+                </div>
+            
+                <!-- Inputs e botão para adicionar atividade especializada -->
+                <div class="input-group mb-3">
+                    <select class="form-select" id="atividadeSelect" disabled>
+                        <option value="">Selecione uma Atividade</option>
+                        <option value="Núcleo de Atenção e Resposta às Chuvas">Núcleo de Atenção e Resposta às Chuvas</option>
+                        <option value="Núcleo de Incêndio Florestal">Núcleo de Incêndio Florestal</option>
+                        <option value="Busca e Salvamento com Cães">Busca e Salvamento com Cães</option>
+                        <option value="Perito de Incêndio e Explosão">Perito de Incêndio e Explosão</option>
+                        <option value="Inspetor de Incêndio">Inspetor de Incêndio</option>
+                        <option value="Motorresgate">Motorresgate</option>
+                    </select>
+                    <input type="text" class="form-control" id="docDesignInput" placeholder="Doc de Design" disabled>
+                    <button class="btn btn-success" type="button" id="addAtividadeBtn" disabled>+</button>
+                </div>
+            
+                <!-- Div para exibir as atividades especializadas adicionadas -->
+                <div class="tags-input" id="tags-atividade"></div>
+                <!-- Input escondido para armazenar os valores concatenados -->
+                <input type="hidden" id="exp_own" name="exp_own" value="" style="font-size: 0.8em;">
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-4">
+                <label for="modalCob" class="form-label text-primary">COB</label>          
+                <input
+                type="text"
+                class="form-control"
+                id="modalCob"
+                name="modalCob"
+                />
+
+              </div>
+              <div class="col-md-4">
+                <label for="modalUnidLot" class="form-label text-primary">Unid Lotação</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modalUnidLot"
+                  name="modalUnidLot"
+                />
+              </div>
+              <div class="col-md-4">
+                <label for="modalunidprinc" class="form-label text-primary">Unid Lotação</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modalunidprinc"
+                  name="modalunidprinc"
+                />
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="modalSexo" class="form-label text-primary"
+                  >Sexo</label
+                >
+                <select
+                class="form-select changeble-item"
+                aria-label="Default"
+                id="modalSexo"
+                name="modalSexo"
+              >
+                <option selected disabled>Selecione o sexo</option>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+              </select>
+              </div>
+              <div class="col-md-6">
+                <label for="modalpriori" class="form-label text-primary"
+                  >Prioridade</label
+                >
+                <select
+                class="form-select changeble-item"
+                aria-label="Default"
+                id="modalpriori"
+                name="modalpriori"
+                required
+              >
+                <option selected disabled>Selecione a prioridade</option>
+                <option value="A">Alta</option>
+                <option value="M">Média</option>
+                <option value="B">Baixa</option>
+              </select>
+              </div>
+
+            </div>
+            <div class="row align-items-top mt-3 mb-5">
+              <div class="col-xxl-12 col-md-12">
+                <div class="line-container">
+                  <div class="line"></div>
+                  <span class="span-line">EPIs de CIURB</span>
+                  <div class="line"></div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- EPIs - CIURB -->
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_possui" class="form-label text-primary">Possui Conjunto CIURB?</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="ciurb_conjunto_possui" id="ciurb_conjunto_possui_sim" value="sim">
+                  <label class="form-check-label" for="ciurb_conjunto_possui_sim">Sim</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="ciurb_conjunto_possui" id="ciurb_conjunto_possui_nao" value="nao">
+                  <label class="form-check-label" for="ciurb_conjunto_possui_nao">Não</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_jaquetatamanho" class="form-label text-primary">Tamanho da Jaqueta</label>
+                <select id="ciurb_conjunto_jaquetatamanho" class="form-select" name="ciurb_conjunto_jaquetatamanho">
+                  <option value="Pequeno">Pequeno</option>
+                  <option value="Médio">Médio</option>
+                  <option value="Grande">Grande</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_calcatamanho" class="form-label text-primary">Tamanho da Calça</label>
+                <select id="ciurb_conjunto_calcatamanho" class="form-select" name="ciurb_conjunto_calcatamanho">
+                  <option value="Pequeno">Pequeno</option>
+                  <option value="Médio">Médio</option>
+                  <option value="Grande">Grande</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_estadodeconservacao" class="form-label text-primary">Estado de Conservação</label>
+                <select id="ciurb_conjunto_estadodeconservacao" class="form-select" name="ciurb_conjunto_estadodeconservacao">
+                  <option value="Ótimo">Ótimo</option>
+                  <option value="Bom">Bom</option>
+                  <option value="Razoável">Razoável</option>
+                  <option value="Ruim">Ruim</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_condicao" class="form-label text-primary">Condição</label>
+                <select id="ciurb_conjunto_condicao" class="form-select" name="ciurb_conjunto_condicao">
+                  <option value="P">Procede</option>
+                  <option value="NP">Não Procede</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_marca" class="form-label text-primary">Marca</label>
+                <input type="text" class="form-control" id="ciurb_conjunto_marca" name="ciurb_conjunto_marca">
+              </div>
+            </div>
+            
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_modelo" class="form-label text-primary">Modelo</label>
+                <input type="text" class="form-control" id="ciurb_conjunto_modelo" name="ciurb_conjunto_modelo">
+              </div>
+              <div class="col-md-6">
+                <label for="ciurb_conjunto_modelo" class="form-label text-primary">Modelo</label>
+                <input type="text" class="form-control" id="ciurb_conjunto_modelo" name="ciurb_conjunto_modelo">
+              </div>
+            </div>
+
+            <div class="row py-2">
+              <div class="col-md-6">
+                <label for="ciurb_ano_fabric" class="form-label text-primary">Ano Fabricação</label>
+                <input type="number" min="1900" max="2100" class="form-control" id="ciurb_ano_fabric" name="ciurb_ano_fabric">
+              </div>
+              <div class="col-md-6">
+                <label for="ciurb_plan_dist" class="form-label text-primary">Plano de Distribuição</label>
+                <input type="text" class="form-control" id="ciurb_plan_dist" name="ciurb_plan_dist">
+              </div>
+            </div>
+            
+          </div>
+          <input type="hidden" name="modalidpackageequip" id="modalidpackageequip" value="">
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <!-- Cria botão limpar-->
+            <button type="reset" class="btn btn-warning">Limpar</button>
+            <button type="submit" class="btn btn-success w-50">Salvar alterações</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Modal Edit Equpamento Scrollable-->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Funções para o campo de GTO
+    const tagsInputGTO = document.getElementById('tags-input-gto');
+    const tagsSelectGTO = document.getElementById('compgto');
+    const gtosOwnInput = document.getElementById('gtos_own');
+    
+    let gtoList = [];
+    
+    // Função para carregar os GTOS iniciais
+    function loadInitialGtoTags(gtos_user) {
+        if (gtos_user) {
+            const gtos = gtos_user.split(';'); // Separar pelos ';'
+            gtos.forEach(function (gto) {
+                gto = gto.trim();
+                if (gto && !gtoTagExists(gto)) {
+                    gtoList.push(gto);
+                    renderGtoTag(gto);
+                }
+            });
+            updateGtoOwnInput();
+        }
+    }
+    
+    // Adicionar a tag ao selecionar no select
+    tagsSelectGTO.addEventListener('change', function () {
+        const selectedGto = tagsSelectGTO.value.trim();
+        if (selectedGto && !gtoTagExists(selectedGto)) {
+            addGtoTag(selectedGto);
+            tagsSelectGTO.value = ''; // Resetar o select após a seleção
+        }
+    });
+    
+    function addGtoTag(text) {
+        gtoList.push(text);
+        renderGtoTag(text);
+        updateGtoOwnInput();
+    }
+    
+    function renderGtoTag(text) {
+        const tagElement = document.createElement('span');
+        tagElement.classList.add('tag');
+        tagElement.textContent = text;
+    
+        tagElement.style.fontSize = '0.8em';
+    
+        const removeTagElement = document.createElement('span');
+        removeTagElement.classList.add('remove-tag');
+        removeTagElement.textContent = 'x';
+        removeTagElement.addEventListener('click', function () {
+            removeGtoTag(text);
+            tagsInputGTO.removeChild(tagElement);
+        });
+    
+        tagElement.appendChild(removeTagElement);
+        tagsInputGTO.appendChild(tagElement);
+    }
+    
+    function removeGtoTag(text) {
+        const index = gtoList.indexOf(text);
+        if (index > -1) {
+            gtoList.splice(index, 1);
+            updateGtoOwnInput();
+        }
+    }
+    
+    function updateGtoOwnInput() {
+        gtosOwnInput.value = gtoList.join(';');
+    }
+    
+    function gtoTagExists(text) {
+        return gtoList.includes(text);
+    }
+    
+    // Carregar os GTOS iniciais do input oculto
+    const gtos_user = gtosOwnInput.value;
+    if (gtos_user) {
+        loadInitialGtoTags(gtos_user);
+    }
+    
+    // Funções para o campo de Atividades Especializadas
+    const checkbox = document.getElementById('atividadeEspecializadaCheckbox');
+    const atividadeSelect = document.getElementById('atividadeSelect');
+    const docDesignInput = document.getElementById('docDesignInput');
+    const addAtividadeBtn = document.getElementById('addAtividadeBtn');
+    const tagsAtividadeInput = document.getElementById('tags-atividade');
+    const expOwnInput = document.getElementById('exp_own');
+    
+    let atividadeList = [];
+    
+    // Função para carregar as atividades iniciais
+    function loadInitialTags(ativ_esps) {
+        const atividades = ativ_esps.split(';');
+        atividades.forEach(function (atividade) {
+            if (atividade.trim() && !atividadeTagExists(atividade)) {
+                atividadeList.push(atividade); // Adiciona à lista
+                renderAtividadeTag(atividade);
+            }
+        });
+        updateExpOwnInput(); // Atualiza o input após carregar as tags
+    }
+    
+    // Ativar/desativar select, input e botão baseado no checkbox
+    checkbox.addEventListener('change', function () {
+        const isChecked = checkbox.checked;
+        atividadeSelect.disabled = !isChecked;
+        docDesignInput.disabled = !isChecked;
+        addAtividadeBtn.disabled = !isChecked;
+    });
+    
+    // Adicionar a atividade especializada ao clicar no botão "+"
+    addAtividadeBtn.addEventListener('click', function () {
+        const atividade = atividadeSelect.value.trim();
+        const docDesign = docDesignInput.value.trim();
+    
+        if (!atividade || !docDesign) {
+            alert('Por favor, preencha ambos os campos.');
+            return;
+        }
+    
+        const tagText = `${atividade} - ${docDesign}`;
+        addAtividadeTag(tagText);
+    
+        // Limpar os inputs
+        atividadeSelect.value = '';
+        docDesignInput.value = '';
+    });
+    
+    function addAtividadeTag(text) {
+        if (atividadeTagExists(text)) return;
+    
+        atividadeList.push(text);
+        renderAtividadeTag(text);
+        updateExpOwnInput();
+    }
+    
+    function renderAtividadeTag(text) {
+        const tagElement = document.createElement('span');
+        tagElement.classList.add('tag');
+        tagElement.textContent = text;
+    
+        tagElement.style.fontSize = '0.8em';
+    
+        const removeTagElement = document.createElement('span');
+        removeTagElement.classList.add('remove-tag');
+        removeTagElement.textContent = 'x';
+        removeTagElement.addEventListener('click', function () {
+            removeAtividadeTag(text);
+            tagsAtividadeInput.removeChild(tagElement);
+        });
+    
+        tagElement.appendChild(removeTagElement);
+        tagsAtividadeInput.appendChild(tagElement);
+    }
+    
+    function removeAtividadeTag(text) {
+        const index = atividadeList.indexOf(text);
+        if (index > -1) {
+            atividadeList.splice(index, 1);
+        }
+        updateExpOwnInput();
+    }
+    
+    function updateExpOwnInput() {
+        expOwnInput.value = atividadeList.join(';');
+    }
+    
+    function atividadeTagExists(text) {
+        return atividadeList.includes(text);
+    }
+    
+    // Carregar as atividades especializadas iniciais (simulação)
+    const ativ_esps = "{{ user.list_ativ_esp|escapejs }}";  // Receba essa variável do backend Django
+    
+    if (ativ_esps && ativ_esps !== "None") {
+        loadInitialTags(ativ_esps);
+    }
+});
+
+</script>
+  
 {% endblock %}

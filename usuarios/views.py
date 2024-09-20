@@ -861,5 +861,22 @@ def popular_lista_usuarios_view(request):
 @login_required
 def listar_usuarios_view(request):
     # Listar todos os usuários
+    gtos = [
+        "Atendimento a Tentativa de Suicídio",
+        "Atendimento Pré-Hospitalar",
+        "Busca e Resgate em Estruturas Colapsadas",
+        "Busca, Resgate e Salvamento com Cães",
+        "Classificação Internacional",
+        "Incêndio Florestal",
+        "Incêndio Urbano",
+        "Investigação de Incêndio",
+        "Mergulho Autônomo / Salvamento Aquático",
+        "Movimentos de Massas, Enchentes e Inundações",
+        "Produtos Perigosos",
+        "Proteção e Defesa Civil",
+        "Salvamento em Altura",
+        "Salvamento Terrestre",
+        "Salvamento Veicula"
+    ]
     usuarios = Users.objects.all()
-    return render(request, 'listar_usuarios.html', {'usuarios': usuarios})
+    return render(request, 'listar_usuarios.html', {'usuarios': usuarios, 'gtos': gtos})
