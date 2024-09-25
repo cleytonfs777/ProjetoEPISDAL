@@ -224,3 +224,28 @@ function toggleContent() {
         arrow.classList.remove("expanded");
     }
 }
+
+
+// Função para preencher o modal com dados do botão clicado
+var notificationModal = document.getElementById('notificationModal');
+notificationModal.addEventListener('show.bs.modal', function (event) {
+    // Botão que acionou o modal
+    var button = event.relatedTarget;
+
+    // Obtém os valores dos atributos data do botão
+    var tipo = button.getAttribute('data-tipo');
+    var msg = button.getAttribute('data-msg');
+    var date = button.getAttribute('data-date');
+
+    // Atualiza o título do modal
+    var modalTitle = notificationModal.querySelector('.modal-title');
+    modalTitle.textContent = 'Notificação de ' + tipo;
+    modalTitle.style.color = '#007bff';
+
+    // Atualiza o corpo do modal com a mensagem e a data
+    var modalMsg = document.getElementById('modal-msg');
+    modalMsg.innerHTML = `<p style="color: #072E58FF; font-size: 1.1rem; line-height: 1.6;">${msg}</p>`;
+
+    var modalDate = document.getElementById('modal-date');
+    modalDate.textContent = date;
+});

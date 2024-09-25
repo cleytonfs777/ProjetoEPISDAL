@@ -60,8 +60,8 @@ class LuvaEPI(EPIBase):
 class BalaclavaEPI(EPIBase):
     user = models.ForeignKey(
         'usuarios.Users', on_delete=models.CASCADE, null=True, blank=True)
-    camadas = models.CharField(max_length=20, choices=[
-        ('Simples', 'Simples'), ('Dupla', 'Dupla'), ('Tripla', 'Tripla')
+    camadas = models.CharField(max_length=10, choices=[
+        ('S', 'Simples'), ('D', 'Dupla'), ('T', 'Tripla')
     ])
 
 
@@ -74,7 +74,9 @@ class BotaEPI(EPIBase):
 class CapaceteAquaticoEPI(EPIBase):
     user = models.ForeignKey(
         'usuarios.Users', on_delete=models.CASCADE, null=True, blank=True)
-    cor = models.CharField(max_length=50)
+    cor = models.CharField(max_length=20, choices=[
+        ('B', 'Branco'), ('A', 'Amarelo'), ('V', 'Vermelho')
+    ])
 
 
 class CapaceteVeicularEPI(EPIBase):
@@ -92,3 +94,21 @@ class LuvaVeicularEPI(EPIBase):
         ('21,5 a 23 cm', '21,5 a 23 cm'), ('23 a 25 cm', '23 a 25 cm'),
         ('25 a 28 cm', '25 a 28 cm'), ('28 a 30 cm', '28 a 30 cm')
     ])
+
+
+class Mensagem(models.Model):
+    choices_tipo = (
+        ('p', 'Planejamento'),
+        ('a', 'Aquisição'),
+        ('t', 'Transporte'),
+        ('g', 'Geral'),
+    )
+    msg = models.CharField(max_length=100)
+    data = models.DateTimeField(auto_now_add=True)
+    tipo = models.BooleanField(default=False)
+    lida = models.BooleanField(default=False)
+    user = models.ForeignKey(
+        'usuarios.Users', on_delete=models.CASCADE, null=True, blank=True, related_name='mensagens')
+
+    def __str__(self):
+        return self.assunto

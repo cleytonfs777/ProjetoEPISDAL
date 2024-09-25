@@ -1,0 +1,126 @@
+label.form-label {
+  color: #012970 !important;
+}
+th.ocultar,
+td.ocultar {
+  display: none;
+}
+.table-dot tbody {
+  display: block; /* Permite que o tbody seja rolável */
+  max-height: 45em; /* Define a altura máxima */
+  overflow-y: auto; /* Permite a rolagem vertical quando necessário */
+}
+
+.table-dot thead,
+.table-dot tbody tr {
+  display: table; /* Faz com que o thead e tr se comportem como uma tabela */
+  width: 100%; /* Faz com que o thead e tr ocupem a largura total da tabela */
+  table-layout: fixed; /* Garante que as células da tabela sejam de largura igual */
+}
+
+/* Estilo personalizado para os elementos <td> */
+.table-dot td {
+  color: #012970; /* Cor de texto azul escuro */
+  font-size: 0.8em; /* Tamanho de fonte menor */
+  padding: 5px; /* Espaçamento interno, ajuste conforme necessário */
+}
+
+.modal-custom {
+  max-width: 50%; /* Ou o valor que você quiser */
+}
+/* Estilização para o botão principal */
+.button-main {
+  color: orange;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Estilização para o campo de tags */
+.tags-input {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+  background-color: #f9f9f9; /* Um fundo leve para destaque */
+}
+
+.tags-input .tag {
+  background-color: #add8e6;
+  color: #000000;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.tags-input .tag .remove-tag {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.tags-input input {
+  border: none;
+  outline: none;
+  flex: 1;
+}
+
+/* Ajustes adicionais para o modal */
+.modal-custom .form-select,
+.modal-custom .form-control {
+  font-size: 0.9em;
+  padding: 8px;
+}
+
+.modal-custom .modal-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-custom .modal-footer {
+  justify-content: space-between;
+}
+
+.modal-custom .modal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-custom .btn-close {
+  background-color: white;
+  color: black;
+}
+
+.form-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.form-control {
+  border-radius: 5px;
+}
+
+.input-group .form-control {
+  flex: 1;
+}
+
+.form-check-label {
+  font-size: 0.9rem;
+}
+
+/* Estilização do botão "Adicionar Atividade Especializada" */
+.btn-success {
+  font-size: 0.9rem;
+}
+.sub-title-main {
+  font-weight: bold;
+  font-size: 1.2rem;
+  background-color: #1d1d1dff;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}

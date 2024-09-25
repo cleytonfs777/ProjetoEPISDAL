@@ -105,9 +105,10 @@ class Users(AbstractUser):
     choice_motoresg = (('S', 'Sim'),
                        ('N', 'Nao'))
 
-    choice_priorit = (('A', 'Alta'),
-                      ('M', 'Media'),
-                      ('B', 'Baixa'))
+    choice_priorit = (('1', '1ª Prioridade'),
+                      ('2', '2ª Prioridade'),
+                      ('3', '3ª Prioridade'),
+                      ('4', '4ª Prioridade'))
 
     choice_sexo = (('M', 'Masculino'),
                    ('F', 'Feminino'))

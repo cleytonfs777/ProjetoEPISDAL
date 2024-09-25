@@ -1,0 +1,32 @@
+  <!-- Modal Delete Militars Inicio -->
+  <div class="modal fade" id="modalDeleteMil" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modaltitleequip" class="modal-title fw-bold text-danger h3">Excluir Militar </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="formDelEquip" data-action="#" method="POST">
+            {% csrf_token %}
+            <h5 class="card-title" style="text-align: center;color: red;line-height: 1.5;"> Realmente deseja apagar permanentemente o Militar?</h5>
+            <button type="submit" class="btn btn-danger btn-lg m-3">Excluir</button>
+            <button
+            type="button"
+            class="btn btn-secondary btn-lg m-3"
+            data-bs-dismiss="modal"
+            >
+            Cancelar
+          </button>
+        </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  <!-- Modal Delete Equipamentos Fim -->

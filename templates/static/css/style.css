@@ -1442,3 +1442,59 @@ span.loader {
   right: 10px;
   font-size: 18px;
 }
+
+/* Estilização dos Botoes de Notificação */
+
+.notification-btn {
+  position: relative;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  color: white;
+  cursor: pointer;
+  margin-left: 1.8rem;
+  margin-right: 1.8rem;
+}
+
+.notification-btn i {
+  font-size: 1.3rem;
+}
+
+/* Estilos para cada tipo de botão */
+.btn-planejamento {
+  background-color: #007bff;
+}
+
+.btn-pagamento {
+  background-color: #28a745;
+}
+
+.btn-transporte {
+  background-color: #a10202;
+}
+
+.btn-global {
+  background-color: #6c757d;
+}
+
+/* Estilos do Badge (flutuando no canto superior direito) */
+.badge-notification {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: rgb(211, 120, 0);
+  color: white;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.3);
+}
