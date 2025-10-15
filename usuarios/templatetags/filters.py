@@ -20,6 +20,8 @@ def list_gtos(list):
 @register.filter(name="dias_para_anos")
 def dias_para_anos(dias):
     # Considera-se que um ano tem 365 dias
+    if dias is None:
+        return "0 anos"
     anos = dias // 365
     return f"{anos} anos"
 
